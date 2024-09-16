@@ -1,20 +1,16 @@
 {
-  "name": "my-electron-app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "electron": "^32.1.0",
-    "electron-packager": "^17.1.2"
-  },
-  "dependencies": {
-    "better-sqlite3": "^11.3.0"
+    "name": "erp-hortifruti",
+    "version": "1.0.0",
+    "description": "ERP para hortifruti desenvolvido com Electron e JavaScript.",
+    "main": "main.js",
+    "scripts": {
+      "start": "electron ."
+    },
+    "author": "Samuel",
+    "license": "ISC",
+    "dependencies": {
+      "electron": "^25.3.1",
+      "sqlite3": "^5.1.4"
+    }
   }
-}
+  
