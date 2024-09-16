@@ -1,0 +1,29 @@
+<form id="form-produtos">
+    <label for="nome-produto">Nome do Produto:</label>
+    <input type="text" id="nome-produto" required><br>
+    
+    <label for="preco-produto">Preço (decimal):</label>
+    <input type="number" step="0.01" id="preco-produto" required><br>
+    
+    <button type="submit">Adicionar</button>
+  </form>
+  
+  <script>
+    document.getElementById('form-produtos').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const nomeProduto = document.getElementById('nome-produto').value;
+      const precoProduto = parseFloat(document.getElementById('preco-produto').value);
+  
+      if (isNaN(precoProduto)) {
+        alert('Por favor, insira um valor válido para o preço.');
+        return;
+      }
+  
+      // Função para adicionar o produto com preço decimal
+      window.api.adicionarProduto(nomeProduto, precoProduto);
+  
+      // Atualizar lista de produtos
+      atualizarProdutos();
+    });
+  </script>
+  

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Vendas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Relatório de Vendas</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="registro.html">Cadastrar Usuário</a></li>
+        <li><a href="produtos.html">Produtos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section>
+    <h2>Resumo de Vendas</h2>
+    <table id="tabela-vendas">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade Vendida</th>
+          <th>Valor Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- As vendas serão inseridas aqui -->
+      </tbody>
+    </table>
+  </section>
+
+  <script>
+    // Função para carregar e exibir as vendas
+    window.api.obterRelatorioVendas().then(vendas => {
+      const tabelaVendas = document.getElementById('tabela-vendas').getElementsByTagName('tbody')[0];
+      tabelaVendas.innerHTML = '';  // Limpar tabela antes de preencher
+
+      vendas.forEach(venda => {
+        const row = tabelaVendas.insertRow();
+        row.insertCell(0).textContent = venda.produto;
+        row.insertCell(1).textContent = venda.quantidade;
+        row.insertCell(2).textContent = 'R$' + venda.valor_total.toFixed(2);
+      });
+    });
+  </script>
+</body>
+</html>

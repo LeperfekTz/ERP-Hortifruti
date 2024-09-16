@@ -1,47 +1,39 @@
-const sqlite3 = require("sqlite3").verbose();
-const bcrypt = require("bcryptjs");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
-const db = new sqlite3.Database(path.join(__dirname, "erp-database.db"));
+// Criação da janela principal
+function createWindow() {
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "renderer", "renderer.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
 
-db.serialize(() => {
-  // Criação de tabelas
-  db.run(
-    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)"
-  );
-  db.run(
-    "CREATE TABLE IF NOT EXISTS produtos (id INTEGER PRIMARY KEY, nome TEXT, preco REAL)"
-  );
-  db.run(
-    "CREATE TABLE IF NOT EXISTS vendas (id INTEGER PRIMARY KEY, produto_id INTEGER, quantidade INTEGER, data TEXT)"
-  );
+  // Carregar o arquivo HTML principal
+  win.loadFile("renderer/index.html");
+
+  // Abrir as ferramentas de desenvolvedor (opcional)
+  // win.webContents.openDevTools();
+}
+
+// Quando o Electron estiver pronto, cria a janela
+app.whenReady().then(() => {
+  createWindow();
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
 });
 
-// Função para registrar usuários (criptografando a senha)
-function registerUser(username, password, callback) {
-  const hash = bcrypt.hashSync(password, 10);
-  db.run(
-    "INSERT INTO users (username, password) VALUES (?, ?)",
-    [username, hash],
-    (err) => {
-      callback(err);
-    }
-  );
-}
-
-// Função para validar login
-function loginUser(username, password, callback) {
-  db.get(
-    "SELECT password FROM users WHERE username = ?",
-    [username],
-    (err, row) => {
-      if (err || !row) {
-        return callback(false);
-      }
-      const isValid = bcrypt.compareSync(password, row.password);
-      callback(isValid); // Retorna true se o login for válido, false caso contrário
-    }
-  );
-}
-
-module.exports = { registerUser, loginUser };
+// Fechar o app quando todas as janelas forem fechadas (exceto no macOS)
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
