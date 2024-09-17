@@ -41,7 +41,15 @@
       const senha = document.getElementById('senha').value;
       
       // Função para cadastrar o usuário
-      window.api.cadastrarUsuario(nome, email, senha);
+      window.api.cadastrarUsuario(nome, email, senha)
+        .then(response => {
+          // Exibir mensagem de sucesso ou erro
+          alert(response);
+        })
+        .catch(error => {
+          // Exibir mensagem de erro
+          alert("Email  já cadastrado");
+        });
     });
   </script>
 </body>

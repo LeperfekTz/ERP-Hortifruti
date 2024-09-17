@@ -3,27 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ERP Hortifruti - Produtos</title>
-  <script defer src="produtos.js"></script>
+  <title>Produtos - ERP Hortifruti</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Gestão de Produtos</h1>
-
-  <!-- Formulário para cadastrar produtos -->
-  <form id="form-cadastrar-produto">
-    <label for="nome">Nome do Produto:</label>
-    <input type="text" id="nome" name="nome" required>
+  <header>
+    <h1>Cadastro e Listagem de Produtos</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="cadastro.html">Cadastrar Usuário</a></li>
+        <li><a href="relatorio.html">Relatório de Vendas</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section>
+    <h2>Cadastro de Produtos</h2>
+    <form id="form-cadastrar-produto">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome" required>
+      <label for="preco">Preço:</label>
+      <input type="number" id="preco" name="preco" step="0.01" required>
+      <button type="submit">Cadastrar Produto</button>
+    </form>
     
-    <label for="preco">Preço:</label>
-    <input type="number" id="preco" name="preco" step="0.01" required>
-    
-    <button type="submit">Cadastrar Produto</button>
-  </form>
-
-  <!-- Botão para listar produtos -->
-  <button id="btn-listar-produtos">Listar Produtos</button>
-
-  <!-- Área para exibir a lista de produtos -->
-  <ul id="lista-produtos"></ul>
+    <h2>Lista de Produtos</h2>
+    <button id="btn-listar-produtos">Listar Produtos</button>
+    <ul id="lista-produtos"></ul>
+  </section>
+  <script src="/home/leperfekt/Documents/App em js/novo_app_electron/ERP-Hortifruti/renderer/produtos.js"></script>
 </body>
 </html>
