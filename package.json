@@ -4,13 +4,12 @@
     "description": "ERP para hortifruti desenvolvido com Electron e JavaScript.",
     "main": "main.js",
     "scripts": {
-      "start": "electron ."
+        "start": "electron ."
     },
     "author": "Samuel",
     "license": "ISC",
     "dependencies": {
-      "electron": "^25.3.1",
-      "sqlite3": "^5.1.4"
+        "electron": "^25.3.1",
+        "sqlite3": "^5.1.7"
     }
-  }
-  
+}

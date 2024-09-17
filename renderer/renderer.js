@@ -1,5 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./db/database.db");
+const db = new sqlite3.Database(
+  "/home/leperfekt/Documents/App em js/novo_app_electron/ERP-Hortifruti/db/database.db"
+);
 
 // Criação de tabelas se não existirem
 db.serialize(() => {
@@ -27,40 +29,44 @@ db.serialize(() => {
 
 // Função para cadastrar o usuário
 window.api.cadastrarUsuario = (nome, email, senha) => {
-  db.run(
-    `INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)`,
-    [nome, email, senha],
-    function (err) {
-      if (err) {
-        alert("Erro ao cadastrar usuário: " + err.message);
-      } else {
-        alert("Usuário cadastrado com sucesso!");
+  return new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)`,
+      [nome, email, senha],
+      function (err) {
+        if (err) {
+          reject(new Error("Erro ao cadastrar usuário: " + err.message));
+        } else {
+          resolve("Usuário cadastrado com sucesso!");
+        }
       }
-    }
-  );
+    );
+  });
 };
 
-// Função para adicionar produto com preço decimal
+// Função para adicionar um novo produto
 window.api.adicionarProduto = (nome, preco) => {
-  db.run(
-    `INSERT INTO produtos (nome, preco) VALUES (?, ?)`,
-    [nome, preco],
-    function (err) {
-      if (err) {
-        alert("Erro ao adicionar produto: " + err.message);
-      } else {
-        alert("Produto adicionado com sucesso!");
+  return new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO produtos (nome, preco) VALUES (?, ?)`,
+      [nome, preco],
+      function (err) {
+        if (err) {
+          reject(new Error("Erro ao adicionar produto: " + err.message));
+        } else {
+          resolve("Produto adicionado com sucesso!");
+        }
       }
-    }
-  );
+    );
+  });
 };
 
-// Função para obter produtos
+// Função para listar todos os produtos
 window.api.obterProdutos = () => {
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM produtos`, [], (err, rows) => {
       if (err) {
-        reject(err);
+        reject(new Error("Erro ao obter produtos: " + err.message));
       } else {
         resolve(rows);
       }
@@ -68,24 +74,12 @@ window.api.obterProdutos = () => {
   });
 };
 
-// Função para obter relatório de vendas
-window.api.obterRelatorioVendas = () => {
-  return new Promise((resolve, reject) => {
-    db.all(
-      `
-      SELECT p.nome AS produto, SUM(v.quantidade) AS quantidade, SUM(v.valor_total) AS valor_total 
-      FROM vendas v 
-      JOIN produtos p ON v.produto_id = p.id 
-      GROUP BY p.nome
-    `,
-      [],
-      (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      }
-    );
-  });
-};
+// Exemplo de utilização de IPC para resposta de cadastro de usuário
+const { ipcRenderer } = require("electron");
+ipcRenderer.on("usuario-cadastrado", (event, response) => {
+  if (response.sucesso) {
+    alert(response.mensagem); // Exibir sucesso
+  } else {
+    alert(response.mensagem); // Exibir erro (por exemplo, email duplicado)
+  }
+});

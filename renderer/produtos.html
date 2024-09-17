@@ -1,29 +1,29 @@
-<form id="form-produtos">
-    <label for="nome-produto">Nome do Produto:</label>
-    <input type="text" id="nome-produto" required><br>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERP Hortifruti - Produtos</title>
+  <script defer src="produtos.js"></script>
+</head>
+<body>
+  <h1>Gestão de Produtos</h1>
+
+  <!-- Formulário para cadastrar produtos -->
+  <form id="form-cadastrar-produto">
+    <label for="nome">Nome do Produto:</label>
+    <input type="text" id="nome" name="nome" required>
     
-    <label for="preco-produto">Preço (decimal):</label>
-    <input type="number" step="0.01" id="preco-produto" required><br>
+    <label for="preco">Preço:</label>
+    <input type="number" id="preco" name="preco" step="0.01" required>
     
-    <button type="submit">Adicionar</button>
+    <button type="submit">Cadastrar Produto</button>
   </form>
-  
-  <script>
-    document.getElementById('form-produtos').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const nomeProduto = document.getElementById('nome-produto').value;
-      const precoProduto = parseFloat(document.getElementById('preco-produto').value);
-  
-      if (isNaN(precoProduto)) {
-        alert('Por favor, insira um valor válido para o preço.');
-        return;
-      }
-  
-      // Função para adicionar o produto com preço decimal
-      window.api.adicionarProduto(nomeProduto, precoProduto);
-  
-      // Atualizar lista de produtos
-      atualizarProdutos();
-    });
-  </script>
-  
+
+  <!-- Botão para listar produtos -->
+  <button id="btn-listar-produtos">Listar Produtos</button>
+
+  <!-- Área para exibir a lista de produtos -->
+  <ul id="lista-produtos"></ul>
+</body>
+</html>
