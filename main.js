@@ -3,14 +3,27 @@ const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(
   path.join(__dirname, "db", "database.db"),
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
   (err) => {
     if (err) {
       console.error("Erro ao abrir o banco de dados:", err.message);
     } else {
       console.log("Banco de dados conectado com sucesso.");
+
+      // Configura o modo WAL
+      db.exec("PRAGMA journal_mode = WAL;", (err) => {
+        if (err) {
+          console.error("Erro ao configurar o modo WAL:", err.message);
+        } else {
+          console.log("Modo WAL configurado com sucesso.");
+        }
+      });
     }
   }
 );
+
+// Define um timeout de 5 segundos
+db.configure("busyTimeout", 5000);
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -25,9 +38,6 @@ function createWindow() {
   });
 
   win.loadFile("renderer/index.html");
-
-  // Abrir as ferramentas de desenvolvedor automaticamente
-  // win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -92,21 +102,44 @@ ipcMain.handle("obter-produtos", () => {
   });
 });
 
-ipcMain.handle(
-  "registrar-venda",
-  (event, produtoId, quantidade, valorTotal) => {
-    return new Promise((resolve, reject) => {
-      db.run(
-        `INSERT INTO vendas (produto_id, quantidade, valor_total) VALUES (?, ?, ?)`,
-        [produtoId, quantidade, valorTotal],
-        function (err) {
+ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.run("BEGIN TRANSACTION");
+
+      db.get(
+        `SELECT preco FROM produtos WHERE id = ?`,
+        [produtoId],
+        (err, row) => {
           if (err) {
-            reject(new Error("Erro ao registrar venda: " + err.message));
-          } else {
-            resolve("Venda registrada com sucesso!");
+            db.run("ROLLBACK");
+            reject(new Error("Erro ao obter preço do produto: " + err.message));
+            return;
           }
+
+          if (!row) {
+            db.run("ROLLBACK");
+            reject(new Error("Produto não encontrado"));
+            return;
+          }
+
+          const valorTotal = row.preco * quantidade;
+
+          db.run(
+            `INSERT INTO vendas (nomeProd, quantidade, valor_total) VALUES (?, ?, ?)`,
+            [produtoId, quantidade, valorTotal],
+            function (err) {
+              if (err) {
+                db.run("ROLLBACK");
+                reject(new Error("Erro ao registrar venda: " + err.message));
+              } else {
+                db.run("COMMIT");
+                resolve("Venda registrada com sucesso!");
+              }
+            }
+          );
         }
       );
     });
-  }
-);
+  });
+});

@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1213"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="sqlite_sequence" custom_title="0" dock_id="1" table="4,15:mainsqlite_sequence"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE IF NOT EXISTS usuarios (
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="934"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="produtos" custom_title="0" dock_id="4" table="4,8:mainprodutos"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- Passo 1: Criar uma nova tabela com a estrutura desejada
+CREATE TABLE vendas_nova (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    senha TEXT NOT NULL
-);
-CREATE TABLE IF NOT EXISTS produtos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    preco REAL NOT NULL
-);
-CREATE TABLE IF NOT EXISTS vendas (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    produto_id INTEGER,
+    nomeProd TEXT NOT NULL,
     quantidade INTEGER NOT NULL,
-    valor_total REAL NOT NULL,
-    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+    valor_total REAL NOT NULL
 );
-INSERT INTO usuarios (nome, email, senha) VALUES ('John Doe', 'john@example.com', '123456');
-INSERT INTO produtos (nome, preco) VALUES ('Banana', 2.50);
+
+-- Passo 2: Copiar dados da tabela antiga para a nova tabela
+INSERT INTO vendas_nova (id, nomeProd, quantidade, valor_total)
+SELECT id, (SELECT nome FROM produtos WHERE produtos.id = vendas.produto_id) AS nomeProd,
+       quantidade, valor_total
+FROM vendas;
+
+-- Passo 3: Excluir a tabela antiga
+DROP TABLE vendas;
+
+-- Passo 4: Renomear a nova tabela para o nome da tabela antiga
+ALTER TABLE vendas_nova RENAME TO vendas;
 </sql><current_tab id="0"/></tab_sql></sqlb_project>
