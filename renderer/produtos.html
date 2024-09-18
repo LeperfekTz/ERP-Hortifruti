@@ -1,140 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Produtos - ERP Hortifruti</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Cadastro e Listagem de Produtos</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">Página Inicial</a></li>
-          <li><a href="cadastro.html">Cadastrar Usuário</a></li>
-          <li><a href="vendas.html">Vendas</a></li>
-          <li><a href="relatorio.html">Relatório de Vendas</a></li>
-        </ul>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produtos - ERP Hortifruti</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Cadastro e Listagem de Produtos</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="cadastro.html">Cadastrar Usuário</a></li>
+        <li><a href="vendas.html">Vendas</a></li>
+        <li><a href="relatorio.html">Relatório de Vendas</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <section>
-      <h2>Cadastro de Produtos</h2>
-      <form id="form-cadastrar-produto">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" required /><br />
+  <section>
+    <h2>Cadastro de Produtos</h2>
+    <form id="form-cadastrar-produto">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" required /><br />
 
-        <label for="preco">Preço:</label>
-        <input type="number" id="preco" step="0.01" required /><br />
+      <label for="preco">Preço:</label>
+      <input type="number" id="preco" step="0.01" required /><br />
 
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" required /><br />
+      <label for="quantidade">Quantidade:</label>
+      <input type="number" id="quantidade" required /><br />
 
-        <label for="categoria">Categoria:</label>
-        <select id="categoria" required>
-          <option value="frutas">Frutas</option>
-          <option value="legumes">Legumes</option>
-        </select><br />
+      <label for="categoria">Categoria:</label>
+      <select id="categoria" required>
+        <!-- As opções de categoria serão carregadas dinamicamente -->
+      </select><br />
 
-        <button type="submit">Cadastrar Produto</button>
-      </form>
+      <button type="submit">Cadastrar Produto</button>
+    </form>
 
-      <h2>Lista de Produtos</h2>
-      <button id="btn-listar-produtos">Listar Produtos</button>
-      <table id="tabela-produtos">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Categoria</th>
-            <th>Quantidade</th>
-            <th>Preço</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Os produtos serão listados aqui -->
-        </tbody>
-      </table>
-    </section>
+    <h2>Gerenciar Produtos e Categorias</h2>
+    <button id="editar-produtos-btn">Editar Produtos</button>
+    <button id="editar-categorias-btn">Editar Categorias</button>
 
-    <script>
-      // Executar o código apenas após o carregamento completo do DOM
-      document.addEventListener("DOMContentLoaded", function () {
-        // Lidar com o envio do formulário de cadastro de produtos
-        const formCadastrarProduto = document.getElementById("form-cadastrar-produto");
+    <h2>Lista de Produtos</h2>
+    <button id="btn-listar-produtos">Listar Produtos</button>
+    <table id="tabela-produtos">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Quantidade</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Os produtos serão listados aqui -->
+      </tbody>
+    </table>
+  </section>
 
-        formCadastrarProduto.addEventListener("submit", (e) => {
-          e.preventDefault();
+  <script>
+    // Executar o código apenas após o carregamento completo do DOM
+    document.addEventListener("DOMContentLoaded", function () {
+      const formCadastrarProduto = document.getElementById("form-cadastrar-produto");
+      const btnListarProdutos = document.getElementById("btn-listar-produtos");
+      const btnEditarProdutos = document.getElementById("editar-produtos-btn");
+      const btnEditarCategorias = document.getElementById("editar-categorias-btn");
+      const categoriaSelect = document.getElementById("categoria");
 
-          console.log("Formulário de cadastro de produto enviado.");
-
-          const nome = document.getElementById("nome").value;
-          const preco = parseFloat(document.getElementById("preco").value);
-          const quantidade = parseInt(document.getElementById("quantidade").value);
-          const categoria = document.getElementById("categoria").value;
-
-          console.log(
-            `Dados do produto: Nome=${nome}, Preço=${preco}, Quantidade=${quantidade}, Categoria=${categoria}`
-          );
-
-          // Chamar a função do backend para adicionar o produto
-          window.api
-            .adicionarProduto(nome, preco, quantidade, categoria)
-            .then((message) => {
-              console.log("Produto adicionado com sucesso:", message);
-              alert(message);
-              // Limpar o formulário após o cadastro
-              formCadastrarProduto.reset();
-            })
-            .catch((error) => {
-              console.error("Erro ao adicionar o produto:", error.message);
-              alert(error.message);
+      // Função para carregar categorias do banco de dados
+      function carregarCategorias() {
+        window.api.obterCategorias()
+          .then((categorias) => {
+            console.log("Categorias retornadas do backend:", categorias);
+            categoriaSelect.innerHTML = ""; // Limpar opções existentes
+            categorias.forEach((categoria) => {
+              const option = document.createElement("option");
+              option.value = categoria.nome;
+              option.textContent = categoria.nome;
+              categoriaSelect.appendChild(option);
             });
-        });
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar categorias:", error.message);
+            alert("Erro ao carregar categorias: " + error.message);
+          });
+      }
 
-        // Lidar com o clique para listar produtos
-        const btnListarProdutos = document.getElementById("btn-listar-produtos");
+      // Lidar com o envio do formulário de cadastro de produtos
+      formCadastrarProduto.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-        btnListarProdutos.addEventListener("click", () => {
-          console.log("Botão 'Listar Produtos' clicado.");
+        console.log("Formulário de cadastro de produto enviado.");
 
-          // Chamar a função do backend para obter os produtos
-          window.api
-            .obterProdutos()
-            .then((produtos) => {
-              console.log("Produtos retornados do backend:", produtos);
-              const tabelaProdutos = document
-                .getElementById("tabela-produtos")
-                .getElementsByTagName("tbody")[0];
-              tabelaProdutos.innerHTML = ""; // Limpar a tabela antes de adicionar novos itens
+        const nome = document.getElementById("nome").value;
+        const preco = parseFloat(document.getElementById("preco").value);
+        const quantidade = parseInt(document.getElementById("quantidade").value);
+        const categoria = document.getElementById("categoria").value;
 
-              // Verificar se há produtos a serem listados
-              if (produtos.length === 0) {
-                console.log("Nenhum produto cadastrado.");
-                tabelaProdutos.innerHTML =
-                  "<tr><td colspan='4'>Nenhum produto cadastrado.</td></tr>";
-                return;
-              }
+        console.log(
+          `Dados do produto: Nome=${nome}, Preço=${preco}, Quantidade=${quantidade}, Categoria=${categoria}`
+        );
 
-              // Listar cada produto
-              produtos.forEach((produto) => {
-                console.log(
-                  `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}`
-                );
-                const row = tabelaProdutos.insertRow();
-                row.insertCell(0).textContent = produto.nome || "Não disponível";
-                row.insertCell(1).textContent = produto.categoria || "Não disponível";
-                row.insertCell(2).textContent =
-                  produto.quantidade !== null ? produto.quantidade : "Não disponível";
-                row.insertCell(3).textContent = "R$ " + (produto.preco || 0).toFixed(2);
-              });
-            })
-            .catch((error) => {
-              console.error("Erro ao listar produtos:", error.message);
-              alert("Erro ao listar produtos: " + error.message);
-            });
-        });
+        // Chamar a função do backend para adicionar o produto
+        window.api.adicionarProduto(nome, preco, quantidade, categoria)
+          .then((message) => {
+            console.log("Produto adicionado com sucesso:", message);
+            alert(message);
+            formCadastrarProduto.reset();
+            carregarCategorias(); // Recarregar categorias após o cadastro
+          })
+          .catch((error) => {
+            console.error("Erro ao adicionar o produto:", error.message);
+            alert(error.message);
+          });
       });
-    </script>
-  </body>
+
+      // Lidar com o clique para listar produtos
+      btnListarProdutos.addEventListener("click", () => {
+        console.log("Botão 'Listar Produtos' clicado.");
+
+        window.api.obterProdutos()
+          .then((produtos) => {
+            console.log("Produtos retornados do backend:", produtos);
+            const tabelaProdutos = document
+              .getElementById("tabela-produtos")
+              .getElementsByTagName("tbody")[0];
+            tabelaProdutos.innerHTML = ""; // Limpar a tabela antes de adicionar novos itens
+
+            if (produtos.length === 0) {
+              console.log("Nenhum produto cadastrado.");
+              tabelaProdutos.innerHTML =
+                "<tr><td colspan='4'>Nenhum produto cadastrado.</td></tr>";
+              return;
+            }
+
+            produtos.forEach((produto) => {
+              console.log(
+                `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}`
+              );
+              const row = tabelaProdutos.insertRow();
+              row.insertCell(0).textContent = produto.nome || "Não disponível";
+              row.insertCell(1).textContent = produto.categoria || "Não disponível";
+              row.insertCell(2).textContent =
+                produto.quantidade !== null ? produto.quantidade : "Não disponível";
+              row.insertCell(3).textContent = "R$ " + (produto.preco || 0).toFixed(2);
+            });
+          })
+          .catch((error) => {
+            console.error("Erro ao listar produtos:", error.message);
+            alert("Erro ao listar produtos: " + error.message);
+          });
+      });
+
+      // Função para abrir a janela de edição de produtos
+      btnEditarProdutos.addEventListener("click", () => {
+        window.api.abrirJanelaEditarProdutos();
+      });
+
+      // Função para abrir a janela de edição de categorias
+      btnEditarCategorias.addEventListener("click", () => {
+        window.api.abrirJanelaEditarCategorias();
+      });
+
+      // Carregar categorias ao carregar a página
+      carregarCategorias();
+    });
+  </script>
+</body>
 </html>

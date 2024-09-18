@@ -110,3 +110,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//código para abrir novas janelas ao clicar nos botões
+
+document.getElementById("editar-produtos-btn").addEventListener("click", () => {
+  window.api.abrirJanelaEditarProdutos();
+});
+
+document
+  .getElementById("editar-categorias-btn")
+  .addEventListener("click", () => {
+    window.api.abrirJanelaEditarCategorias();
+  });

@@ -95,6 +95,11 @@
           scales: {
             y: {
               beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R$ ' + value.toFixed(2).replace('.', ','); // Exibir em reais
+                }
+              }
             },
           },
         },
