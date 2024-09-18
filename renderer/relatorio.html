@@ -1,54 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Vendas</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório de Vendas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Relatório de Vendas</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Página Inicial</a></li>
-        <li><a href="cadastro.html">Cadastrar Usuário</a></li>
-        <li><a href="produtos.html">Produtos</a></li>
-        <li><a href="vendas.html">Vendas</a></li>
+    <header>
+        <h1>Relatório de Vendas</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Página Inicial</a></li>
+                <li><a href="cadastro.html">Cadastrar Usuário</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li><a href="vendas.html">Vendas</a></li>
+            </ul>
+        </nav>
+    </header>
 
-      </ul>
-    </nav>
-  </header>
+    <section>
+        <h2>Resumo de Vendas</h2>
+        <table id="tabela-vendas">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade Vendida</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As vendas serão inseridas aqui -->
+            </tbody>
+        </table>
+    </section>
 
-  <section>
-    <h2>Resumo de Vendas</h2>
-    <table id="tabela-vendas">
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Quantidade Vendida</th>
-          <th>Valor Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- As vendas serão inseridas aqui -->
-      </tbody>
-    </table>
-  </section>
+    <section>
+        <h2>Gráfico de Vendas</h2>
+        <canvas id="salesChart" width="400" height="200"></canvas>
+    </section>
 
-  <script>
-    // Função para carregar e exibir as vendas
-    window.api.obterRelatorioVendas().then(vendas => {
-      const tabelaVendas = document.getElementById('tabela-vendas').getElementsByTagName('tbody')[0];
-      tabelaVendas.innerHTML = '';  // Limpar tabela antes de preencher
+    <script>
+        // Função para carregar e exibir as vendas
+        window.api
+            .obterRelatorioVendas()
+            .then((vendas) => {
+                const tabelaVendas = document
+                    .getElementById("tabela-vendas")
+                    .getElementsByTagName("tbody")[0];
+                tabelaVendas.innerHTML = ""; // Limpar tabela antes de preencher
 
-      vendas.forEach(venda => {
-        const row = tabelaVendas.insertRow();
-        row.insertCell(0).textContent = venda.produto;
-        row.insertCell(1).textContent = venda.quantidade;
-        row.insertCell(2).textContent = 'R$' + venda.valor_total.toFixed(2);
-      });
-    });
-  </script>
+                const labels = [];
+                const values = [];
+
+                vendas.forEach((venda) => {
+                    const row = tabelaVendas.insertRow();
+                    row.insertCell(0).textContent = venda.produto;
+                    row.insertCell(1).textContent = venda.quantidade;
+                    row.insertCell(2).textContent = "R$" + venda.valor_total.toFixed(2);
+
+                    // Preparar dados para o gráfico
+                    labels.push(venda.produto);
+                    values.push(venda.valor_total);
+                });
+
+                // Atualizar o gráfico
+                renderSalesChart({ labels, values });
+            })
+            .catch((error) => {
+                console.error("Erro ao carregar relatório de vendas:", error.message);
+            });
+
+        function renderSalesChart(data) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // ou 'line', 'pie', etc.
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Vendas',
+                        data: data.values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>

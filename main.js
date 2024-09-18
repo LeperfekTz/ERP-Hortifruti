@@ -140,6 +140,30 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
           );
         }
       );
+      0;
     });
   });
 });
+
+ipcMain.handle("obter-relatorio-vendas", () => {
+  return new Promise((resolve, reject) => {
+    db.all(
+      `SELECT p.nome AS produto, SUM(v.quantidade) AS quantidade, SUM(v.valor_total) AS valor_total
+       FROM vendas v
+       JOIN produtos p ON v.nomeProd = p.id
+       GROUP BY p.nome`,
+      [],
+      (err, rows) => {
+        if (err) {
+          reject(
+            new Error("Erro ao obter relatório de vendas: " + err.message)
+          );
+        } else {
+          resolve(rows);
+        }
+      }
+    );
+  });
+});
+
+

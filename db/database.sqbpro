@@ -1,20 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="934"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="produtos" custom_title="0" dock_id="4" table="4,8:mainprodutos"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- Passo 1: Criar uma nova tabela com a estrutura desejada
-CREATE TABLE vendas_nova (
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="934"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="3" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="vendas" custom_title="0" dock_id="4" table="4,6:mainvendas"/><dock_state state="000000ff00000000fd0000000100000002000005340000037dfc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000000005340000011800ffffff000005340000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="produtos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="25"/><column index="2" value="78"/><column index="3" value="47"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="vendas" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="25"/><column index="2" value="76"/><column index="3" value="82"/><column index="4" value="80"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE IF NOT EXISTS produtos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nomeProd TEXT NOT NULL,
-    quantidade INTEGER NOT NULL,
-    valor_total REAL NOT NULL
+    nome TEXT NOT NULL
 );
-
--- Passo 2: Copiar dados da tabela antiga para a nova tabela
-INSERT INTO vendas_nova (id, nomeProd, quantidade, valor_total)
-SELECT id, (SELECT nome FROM produtos WHERE produtos.id = vendas.produto_id) AS nomeProd,
-       quantidade, valor_total
-FROM vendas;
-
--- Passo 3: Excluir a tabela antiga
-DROP TABLE vendas;
-
--- Passo 4: Renomear a nova tabela para o nome da tabela antiga
-ALTER TABLE vendas_nova RENAME TO vendas;
 </sql><current_tab id="0"/></tab_sql></sqlb_project>

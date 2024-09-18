@@ -8,4 +8,5 @@ contextBridge.exposeInMainWorld("api", {
   obterProdutos: () => ipcRenderer.invoke("obter-produtos"),
   registrarVenda: (produtoId, quantidade) =>
     ipcRenderer.invoke("registrar-venda", produtoId, quantidade),
+  obterRelatorioVendas: () => ipcRenderer.invoke("obter-relatorio-vendas"),
 });
