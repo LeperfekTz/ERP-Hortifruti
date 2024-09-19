@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
+const log = require("electron-log");
+
+log.transports.file.resolvePath = () =>
+  `${app.getPath("userData")}/logs/main.log`;
 
 // Abrir a base de dados SQLite
 const db = new sqlite3.Database(
@@ -294,7 +298,6 @@ ipcMain.handle(
     });
   }
 );
-
 
 // Manipulador IPC para editar uma categoria
 ipcMain.handle("editar-categoria", (event, id, novaCategoria) => {

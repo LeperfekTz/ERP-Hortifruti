@@ -11,6 +11,8 @@
     "dependencies": {
         "chart.js": "^4.4.4",
         "electron": "^25.3.1",
+        "electron-log": "^5.2.0",
+        "nodemailer": "^6.9.15",
         "sqlite3": "^5.1.7"
     }
 }
