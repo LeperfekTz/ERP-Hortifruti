@@ -8,11 +8,11 @@ body {
 
 /* Cabeçalho */
 header {
-    background-color: #007bff; /* Cor azul para o cabeçalho */
+    background-color: #4caf50; /* Cor verde para o cabeçalho */
     color: white;
     padding: 1em;
     text-align: center;
-    border-bottom: 2px solid #0056b3; /* Borda inferior para efeito */
+    border-bottom: 2px solid #388e3c; /* Borda inferior verde escuro */
 }
 
 /* Navegação */
@@ -77,7 +77,7 @@ form select {
 /* Botão */
 button {
     padding: 0.5em 1em;
-    background-color: #007bff; /* Cor do botão */
+    background-color: #4caf50; /* Cor do botão verde */
     color: white;
     border: none;
     border-radius: 4px;
@@ -86,7 +86,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Cor ao passar o mouse */
+    background-color: #388e3c; /* Cor ao passar o mouse (verde escuro) */
 }
 
 /* Estilo da tabela para listagem de produtos */
@@ -103,7 +103,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #007bff;
+    background-color: #4caf50; /* Cabeçalho verde */
     color: white;
 }
 
@@ -115,7 +115,7 @@ table tr:hover {
 footer {
     text-align: center;
     padding: 1em;
-    background-color: #007bff;
+    background-color: #4caf50; /* Rodapé verde */
     color: white;
     position: fixed;
     bottom: 0;
