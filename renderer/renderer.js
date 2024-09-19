@@ -61,3 +61,27 @@ document
 document.getElementById("btn-listar-produtos").addEventListener("click", () => {
   listarProdutos();
 });
+// Exemplo de chamada ao manipular cadastro de usuário
+document.getElementById("cadastro-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+
+  try {
+    const resultado = await ipcRenderer.invoke("cadastrar-usuario", nome, email, senha);
+    console.log(resultado); // Para ver a mensagem de sucesso
+  } catch (error) {
+    console.error("Erro ao cadastrar usuário:", error); // Para ver a mensagem de erro
+  }
+});
+
+ipcRenderer
+  .invoke("excluir-categoria", categoriaId)
+  .then((mensagem) => {
+    alert(mensagem); // Isso mostrará "Deletado"
+  })
+  .catch((error) => {
+    console.error(error);
+  });

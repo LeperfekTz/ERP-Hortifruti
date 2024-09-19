@@ -2,8 +2,11 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 const log = require("electron-log");
+const bcrypt = require("bcrypt");
 
-log.transports.file.resolvePath = () =>
+
+// Configura o local do arquivo de log
+log.transports.file.resolvePathFn = () =>
   `${app.getPath("userData")}/logs/main.log`;
 
 // Abrir a base de dados SQLite
@@ -12,21 +15,22 @@ const db = new sqlite3.Database(
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
   (err) => {
     if (err) {
-      console.error("Erro ao abrir o banco de dados:", err.message);
+      log.error("Erro ao abrir o banco de dados:", err.message);
     } else {
-      console.log("Banco de dados conectado com sucesso.");
+      log.info("Banco de dados conectado com sucesso.");
 
       // Configura o modo WAL (Write-Ahead Logging)
       db.exec("PRAGMA journal_mode = WAL;", (err) => {
         if (err) {
-          console.error("Erro ao configurar o modo WAL:", err.message);
+          log.error("Erro ao configurar o modo WAL:", err.message);
         } else {
-          console.log("Modo WAL configurado com sucesso.");
+          log.info("Modo WAL configurado com sucesso.");
         }
       });
     }
   }
 );
+
 
 // Define um timeout de 5 segundos para bloqueios
 db.configure("busyTimeout", 5000);
@@ -42,6 +46,7 @@ function createWindow() {
       enableRemoteModule: false,
     },
   });
+
 
   mainWindow.loadFile("renderer/index.html");
 }
@@ -90,34 +95,45 @@ app.on("window-all-closed", () => {
   }
 });
 
+// Manipuladores IPC para diversas funcionalidades
 ipcMain.handle("cadastrar-usuario", async (event, nome, email, senha) => {
-  return new Promise((resolve, reject) => {
-    // Verificar se o e-mail já está cadastrado
-    db.get("SELECT * FROM usuarios WHERE email = ?", [email], (err, row) => {
-      if (err) {
-        reject("Erro ao acessar o banco de dados");
-      } else if (row) {
-        // E-mail já cadastrado
-        reject("Email já cadastrado");
-      } else {
-        // E-mail não cadastrado, prosseguir com o cadastro
-        db.run(
-          "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)",
-          [nome, email, senha],
-          (err) => {
-            if (err) {
-              reject("Erro ao cadastrar usuário");
-            } else {
-              resolve("Usuário cadastrado com sucesso");
-            }
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Verifica se o email já está cadastrado
+      db.get(
+        "SELECT * FROM usuarios WHERE email = ?",
+        [email],
+        async (err, row) => {
+          if (err) {
+            reject("Erro ao acessar o banco de dados");
+          } else if (row) {
+            reject("Email já cadastrado");
+          } else {
+            // Criptografa a senha
+            const hashedPassword = await bcrypt.hash(senha, 10);
+            // Insere o novo usuário no banco de dados
+            db.run(
+              "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)",
+              [nome, email, hashedPassword],
+              (err) => {
+                if (err) {
+                  reject("Erro ao cadastrar usuário");
+                } else {
+                  resolve("Usuário cadastrado com sucesso");
+                }
+              }
+            );
           }
-        );
-      }
-    });
+        }
+      );
+    } catch (error) {
+      reject("Erro ao cadastrar usuário: " + error.message);
+    }
   });
 });
 
-// Manipulador IPC para adicionar um novo produto
+
+
 ipcMain.handle(
   "adicionar-produto",
   (event, nome, preco, quantidade, categoria) => {
@@ -137,8 +153,20 @@ ipcMain.handle(
     });
   }
 );
+// Manipulador IPC para obter categorias
+ipcMain.handle("obter-categorias", (event) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM categorias";
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        reject(new Error("Erro ao obter categorias: " + err.message));
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+});
 
-// Manipulador IPC para obter todos os produtos
 ipcMain.handle("obter-produtos", () => {
   return new Promise((resolve, reject) => {
     db.all(
@@ -155,7 +183,6 @@ ipcMain.handle("obter-produtos", () => {
   });
 });
 
-// Manipulador IPC para obter todos os produtos para edição
 ipcMain.handle("obter-produtos-editar", () => {
   return new Promise((resolve, reject) => {
     db.all(
@@ -174,13 +201,11 @@ ipcMain.handle("obter-produtos-editar", () => {
   });
 });
 
-// Manipulador IPC para registrar uma venda
 ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       db.run("BEGIN TRANSACTION");
 
-      // Obter o preço e a quantidade disponível do produto
       db.get(
         `SELECT preco, quantidade FROM produtos WHERE id = ?`,
         [produtoId],
@@ -209,7 +234,6 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
 
           const valorTotal = row.preco * quantidade;
 
-          // Registrar a venda
           db.run(
             `INSERT INTO vendas (nomeProd, quantidade, valor_total) VALUES (?, ?, ?)`,
             [produtoId, quantidade, valorTotal],
@@ -220,7 +244,6 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
                 return;
               }
 
-              // Atualizar a quantidade do produto em estoque
               db.run(
                 `UPDATE produtos SET quantidade = quantidade - ? WHERE id = ?`,
                 [quantidade, produtoId],
@@ -247,7 +270,6 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
   });
 });
 
-// Manipulador IPC para obter relatório de vendas
 ipcMain.handle("obter-relatorio-vendas", () => {
   return new Promise((resolve, reject) => {
     db.all(
@@ -272,17 +294,14 @@ ipcMain.handle("obter-relatorio-vendas", () => {
   });
 });
 
-// Manipulador IPC para abrir a janela de edição de produtos
 ipcMain.handle("abrirJanelaEditarProdutos", () => {
   abrirJanelaEditarProdutos();
 });
 
-// Manipulador IPC para abrir a janela de edição de categorias
 ipcMain.handle("abrirJanelaEditarCategorias", () => {
   abrirJanelaEditarCategorias();
 });
 
-// Manipulador IPC para editar um produto
 ipcMain.handle(
   "editar-produto",
   (event, id, nome, preco, quantidade, categoria) => {
@@ -299,7 +318,6 @@ ipcMain.handle(
   }
 );
 
-// Manipulador IPC para editar uma categoria
 ipcMain.handle("editar-categoria", (event, id, novaCategoria) => {
   return new Promise((resolve, reject) => {
     const query = `UPDATE produtos SET categoria = ? WHERE id = ?`;
@@ -312,8 +330,17 @@ ipcMain.handle("editar-categoria", (event, id, novaCategoria) => {
     });
   });
 });
+ipcMain.handle("excluir-categoria", async (event, categoriaId) => {
+  try {
+    await db.run("DELETE FROM categorias WHERE id = ?", categoriaId);
+    return "Deletado"; // Retorna apenas a string "Deletado"
+  } catch (error) {
+    console.error("Erro ao excluir categoria:", error);
+    throw new Error("Erro ao excluir categoria");
+  }
+});
 
-// Manipulador IPC para excluir um produto
+
 ipcMain.handle("excluir-produto", (event, produtoId) => {
   return new Promise((resolve, reject) => {
     const query = `DELETE FROM produtos WHERE id = ?`;
@@ -327,8 +354,6 @@ ipcMain.handle("excluir-produto", (event, produtoId) => {
   });
 });
 
-// Manipulador IPC para adicionar uma nova categoria
-// Adicionar categoria ao banco de dados
 ipcMain.handle("adicionar-categoria", (event, nome) => {
   return new Promise((resolve, reject) => {
     if (!nome || nome.trim() === "") {
@@ -346,35 +371,28 @@ ipcMain.handle("adicionar-categoria", (event, nome) => {
   });
 });
 
-// Obter categorias do banco de dados
-ipcMain.handle("obter-categorias", (event) => {
+ipcMain.handle("login", async (event, email, senha) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM categorias";
-    db.all(query, [], (err, rows) => {
+    const query = "SELECT * FROM usuarios WHERE email = ?";
+    db.get(query, [email], async (err, user) => {
       if (err) {
-        reject(new Error("Erro ao obter categorias: " + err.message));
+        reject(new Error("Erro ao acessar o banco de dados: " + err.message));
+      } else if (!user) {
+        reject(new Error("Usuário não encontrado."));
       } else {
-        resolve(rows);
+        // Adicione os logs aqui
+        log.info("Senha fornecida:", senha);
+        log.info("Hash armazenado:", user.senha);
+
+        const isMatch = await bcrypt.compare(senha, user.senha);
+        log.info("Senha corresponde:", isMatch);
+
+        if (!isMatch) {
+          reject(new Error("Senha incorreta."));
+        } else {
+          resolve("Login bem-sucedido!");
+        }
       }
     });
   });
-});
-
-// Excluir categoria do banco de dados
-ipcMain.handle("excluir-categoria", (event, id) => {
-  return new Promise((resolve, reject) => {
-    const query = "DELETE FROM categorias WHERE id = ?";
-    db.run(query, [id], function (err) {
-      if (err) {
-        reject(new Error("Erro ao excluir categoria: " + err.message));
-      } else {
-        resolve("Categoria excluída com sucesso!");
-      }
-    });
-  });
-});
-
-// Abrir janela principal
-ipcMain.handle("abrirJanelaPrincipal", () => {
-  mainWindow.loadFile("index.html");
 });

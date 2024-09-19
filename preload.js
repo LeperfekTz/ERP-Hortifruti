@@ -1,6 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
+  login: (email, senha) => ipcRenderer.invoke("login", email, senha),
+
   // Função para cadastrar um usuário
   cadastrarUsuario: (nome, email, senha) =>
     ipcRenderer.invoke("cadastrar-usuario", nome, email, senha),

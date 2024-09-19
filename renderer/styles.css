@@ -217,3 +217,82 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* Estilo para centralizar a tela de login */
+#login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0; /* Cor de fundo da tela */
+}
+
+.login-container {
+  background-color: #ffffff; /* Área branca */
+  padding: 40px; /* Aumenta o espaço ao redor do conteúdo */
+  border-radius: 15px; /* Borda arredondada */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 320px; /* Largura da área branca */
+}
+
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  color: #333333;
+}
+
+.login-container label {
+  display: block;
+  font-family: Arial, sans-serif;
+  margin-bottom: 8px;
+  color: #333333;
+}
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #cccccc; /* Borda personalizada */
+  border-radius: 10px; /* Arredondamento das bordas */
+  box-sizing: border-box; /* Inclui padding e border no tamanho total */
+  font-family: Arial, sans-serif;
+}
+
+.login-container button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50; /* Cor do botão */
+  border: none;
+  border-radius: 10px; /* Arredondamento das bordas do botão */
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-container button[type="submit"]:hover {
+  background-color: #45a049; /* Cor do botão ao passar o mouse */
+}
+
+#login-error {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: red;
+  margin-top: 10px;
+}
+
+.login-container p {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.login-container a {
+  color: #4CAF50; /* Cor do link */
+  text-decoration: none;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
