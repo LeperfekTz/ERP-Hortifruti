@@ -1,49 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ERP Hortifruti - Página Inicial</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<!-- Tela de Login -->
-<div id="login-screen">
-  <div class="login-container">
-    <h1>Login</h1>
-    <form id="login-form">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
-      <label for="senha">Senha:</label>
-      <input type="password" id="senha" name="senha" required />
-      <button type="submit" class="login-button">Entrar</button>
-    </form>
-    <p id="login-error" style="color: red; display: none;">Email ou senha incorretos.</p>
-    <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
-  </div>
-</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório de Vendas - ERP Hortifruti</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>   
+         <h1>ERP Hortifruti</h1>
+          <header id="main-header" style="display: none"></header>
+      <nav>
+        <ul>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="vendas.html">Vendas</a></li>
+        </ul>
+      </nav>
+    </header>
+    </header>
 
+    <section>
+      <h2>Resumo de Vendas</h2>
+      <button id="btn-gerar-relatorio">Gerar Relatório</button>
+      <table id="tabela-relatorio">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Categoria</th>
+            <th>Data</th>
+            <th>Quantidade Total</th>
+            <th>Valor Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Os dados do relatório serão listados aqui -->
+        </tbody>
+      </table>
+    </section>
 
-  <!-- Tela de Boas-Vindas e Conteúdo Principal -->
-  <div id="welcome-screen">
-    <div class="welcome-container">
-      <h1>Bem-vindo ao ERP Hortifruti</h1>
-      <p>Gerencie seu negócio de hortifruti com eficiência e simplicidade.</p>
-      <button class="btn-entrar">Aguarde...</button>
-    </div>
-  </div>
+    <section>
+      <h2>Gráfico de Vendas</h2>
+      <canvas id="salesChart" width="400" height="200"></canvas>
+    </section>
 
-  <header id="main-header" style="display: none;">
-    <h1>ERP Hortifruti</h1>
-    <nav>
-      <ul>
-        <li><a href="produtos.html">Produtos</a></li>
-        <li><a href="vendas.html">Vendas</a></li>
-        <li><a href="relatorio.html">Relatório de Vendas</a></li>
-      </ul>
-    </nav>
-  </header>
+    <script>
+      document
+        .getElementById("btn-gerar-relatorio")
+        .addEventListener("click", () => {
+          window.api
+            .obterRelatorioVendas()
+            .then((vendas) => {
+              const tabelaRelatorio = document
+                .getElementById("tabela-relatorio")
+                .getElementsByTagName("tbody")[0];
+              tabelaRelatorio.innerHTML = ""; // Limpar tabela antes de preencher
 
-  <script src="login.js"></script>
-</body>
+              const labels = [];
+              const values = [];
+
+              vendas.forEach((venda) => {
+                const row = tabelaRelatorio.insertRow();
+                row.insertCell(0).textContent = venda.produto;
+                row.insertCell(1).textContent = venda.categoria;
+                row.insertCell(2).textContent = venda.data_venda;
+                row.insertCell(3).textContent = venda.total_quantidade;
+                row.insertCell(4).textContent =
+                  "R$" + venda.valor_total.toFixed(2);
+
+                // Preparar dados para o gráfico
+                labels.push(venda.produto);
+                values.push(venda.valor_total);
+              });
+
+              // Atualizar o gráfico
+              renderSalesChart({ labels, values });
+            })
+            .catch((error) => {
+              console.error(
+                "Erro ao carregar relatório de vendas:",
+                error.message
+              );
+            });
+        });
+
+      function renderSalesChart(data) {
+        const ctx = document.getElementById("salesChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar", // ou 'line', 'pie', etc.
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: "Valor Total das Vendas",
+                data: data.values,
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (value) {
+                    return "R$ " + value.toFixed(2).replace(".", ","); // Exibir em reais
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+    </script>
+  </body>
 </html>

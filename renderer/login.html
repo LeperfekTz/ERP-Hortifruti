@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Tela de Login -->
+    <div id="login-screen">
+      <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form" autocomplete="on">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" autocomplete="email" required />
+          <label for="senha">Senha:</label>
+          <input type="password" id="senha" name="senha" autocomplete="current-password" required />
+          <button type="submit" class="login-button">Entrar</button>
+        </form>
+        <p id="login-error" style="color: red; display: none">
+          Email ou senha incorretos.
+        </p>
+        <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
+      </div>
+    </div>
+
+    <!-- Tela de Boas-Vindas -->
+    <div id="welcome-screen">
+      <div class="welcome-container">
+        <h1>Bem-vindo ao ERP Hortifruti</h1>
+        <p>Gerencie seu negócio de hortifruti com eficiência e simplicidade.</p>
+        <button class="btn-entrar">Aguarde...</button>
+      </div>
+    </div>
+
+    <script src="login.js"></script>
+  </body>
+</html>

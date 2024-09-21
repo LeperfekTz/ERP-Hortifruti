@@ -56,50 +56,47 @@ p {
     z-index: -1;
   }
 }
-
 /* Estilos normais da página */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-header {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  text-align: center;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  background-color: #333;
-}
-
-nav ul li {
-  margin: 0 10px;
-}
-
-nav ul li a {
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
-  display: block;
-}
-
-nav ul li a:hover {
-  background-color: #575757;
-}
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+}
+
+header {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 15px; /* Bordas arredondadas para a navbar */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para a navbar */
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    border-radius: 8px; /* Bordas arredondadas para os links */
+    transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+}
+
+nav ul li a:hover {
+    background-color: #575757; /* Cor de fundo ao passar o mouse nos links */
 }
 
 /* Cabeçalho */
