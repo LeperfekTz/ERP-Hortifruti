@@ -183,26 +183,50 @@ button:hover {
 }
 
 /* Estilo da tabela para listagem de produtos */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+
+
+#tabela-produtos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+#tabela-produtos th,
+#tabela-produtos td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
 }
 
-table th {
-    background-color: #4caf50; /* Cabeçalho verde */
-    color: white;
+#tabela-produtos th {
+  background-color: #4caf50;
+  color: white;
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
+#tabela-produtos tr:nth-child(even) {
+  background-color: #f2f2f2; /* Listras na tabela */
 }
+
+.edit-nome,
+.edit-categoria,
+.edit-quantidade,
+.edit-preco {
+  width: 90%;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.edit-nome:focus,
+.edit-categoria:focus,
+.edit-quantidade:focus,
+.edit-preco:focus {
+  border-color: #4caf50;
+  outline: none; /* Remove o contorno padrão */
+}
+
 
 /* Rodapé */
 footer {
@@ -293,3 +317,38 @@ footer {
 .login-container a:hover {
   text-decoration: underline;
 }
+
+/* Estilo para a tabela de relatório de vendas */
+/* Estilo para a tabela de relatório de vendas */
+#tabela-relatorio {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 8px; /* Bordas arredondadas na tabela */
+  overflow: hidden; /* Para aplicar o border-radius nas células */
+}
+
+#tabela-relatorio th, #tabela-relatorio td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Bordas arredondadas nas células */
+}
+
+#tabela-relatorio th {
+  background-color: #4caf50;
+  color: white;
+}
+
+#tabela-relatorio tr:nth-child(even) {
+  background-color: #f2f2f2; /* Cor de fundo alternada para linhas */
+}
+
+#tabela-relatorio tr:hover {
+  background-color: #ddd; /* Destaque ao passar o mouse */
+}
+
+#tabela-relatorio td {
+  font-size: 16px;
+}
+

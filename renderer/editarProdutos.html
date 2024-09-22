@@ -23,6 +23,7 @@
           <th>Categoria</th>
           <th>Quantidade</th>
           <th>Preço</th>
+          <th>Unidade</th> <!-- Nova coluna -->
           <th>Ação</th>
         </tr>
       </thead>
@@ -60,20 +61,21 @@
             if (produtos.length === 0) {
               console.log("Nenhum produto cadastrado.");
               tabelaProdutos.innerHTML =
-                "<tr><td colspan='5'>Nenhum produto cadastrado.</td></tr>";
+                "<tr><td colspan='6'>Nenhum produto cadastrado.</td></tr>"; // Atualizado para 6
               return;
             }
 
             // Listar cada produto
             produtos.forEach((produto) => {
               console.log(
-                `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}`
+                `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}, Unidade=${produto.unidade}`
               );
               const row = tabelaProdutos.insertRow();
               row.insertCell(0).innerHTML = `<input type="text" value="${produto.nome}" data-id="${produto.id}" class="edit-nome">`;
               row.insertCell(1).innerHTML = `<input type="text" value="${produto.categoria}" data-id="${produto.id}" class="edit-categoria">`;
               row.insertCell(2).innerHTML = `<input type="number" value="${produto.quantidade}" data-id="${produto.id}" class="edit-quantidade">`;
               row.insertCell(3).innerHTML = `<input type="number" step="0.01" value="${produto.preco}" data-id="${produto.id}" class="edit-preco">`;
+              row.insertCell(4).innerHTML = `<input type="text" value="${produto.unidade}" data-id="${produto.id}" class="edit-unidade">`; // Nova entrada para unidade
 
               const saveButton = document.createElement("button");
               saveButton.textContent = "Salvar";
@@ -83,10 +85,11 @@
                 const categoria = row.querySelector(".edit-categoria").value;
                 const quantidade = parseInt(row.querySelector(".edit-quantidade").value, 10);
                 const preco = parseFloat(row.querySelector(".edit-preco").value);
+                const unidade = row.querySelector(".edit-unidade").value; // Adicionado
 
-                if (nome && categoria && quantidade >= 0 && preco >= 0) {
+                if (nome && categoria && quantidade >= 0 && preco >= 0 && unidade) {
                   window.api
-                    .editarProduto(id, nome, preco, quantidade, categoria)
+                    .editarProduto(id, nome, preco, quantidade, categoria, unidade) // Atualizado
                     .then((message) => {
                       alert(message);
                       listarProdutos(); // Atualizar a lista de produtos após edição
@@ -99,7 +102,7 @@
                   alert("Todos os campos são obrigatórios e devem ter valores válidos.");
                 }
               });
-              row.insertCell(4).appendChild(saveButton);
+              row.insertCell(5).appendChild(saveButton); // Atualizado para 5
 
               const deleteButton = document.createElement("button");
               deleteButton.textContent = "Excluir";
@@ -117,7 +120,7 @@
                     });
                 }
               });
-              row.insertCell(5).appendChild(deleteButton);
+              row.insertCell(6).appendChild(deleteButton); // Atualizado para 6
             });
           })
           .catch((error) => {

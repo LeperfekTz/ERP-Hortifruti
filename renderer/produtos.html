@@ -11,8 +11,9 @@
     <h1>Cadastro e Listagem de Produtos</h1>
     <nav>
       <ul>
+        <li><a href="produtos.html">Produtos</a></li>
         <li><a href="vendas.html">Vendas</a></li>
-        <li><a href="index.html">Pagina inicial</a></li>
+        <li><a href="index.html">Página inicial</a></li>
       </ul>
     </nav>
   </header>
@@ -34,6 +35,14 @@
         <!-- As opções de categoria serão carregadas dinamicamente -->
       </select><br />
 
+      <label for="unidade">Unidade:</label>
+      <select id="unidade" required>
+        <option value="kg">kg</option>
+        <option value="unidade">unidade</option>
+        <option value="litro">litro</option>
+        <!-- Adicione mais opções conforme necessário -->
+      </select><br />
+
       <button type="submit">Cadastrar Produto</button>
     </form>
 
@@ -50,6 +59,7 @@
           <th>Categoria</th>
           <th>Quantidade</th>
           <th>Preço</th>
+          <th>Unidade</th> <!-- Nova coluna -->
         </tr>
       </thead>
       <tbody>
@@ -69,7 +79,8 @@
 
       // Função para carregar categorias do banco de dados
       function carregarCategorias() {
-        window.api.obterCategorias()
+        window.api
+          .obterCategorias()
           .then((categorias) => {
             console.log("Categorias retornadas do backend:", categorias);
             categoriaSelect.innerHTML = ""; // Limpar opções existentes
@@ -96,13 +107,15 @@
         const preco = parseFloat(document.getElementById("preco").value);
         const quantidade = parseInt(document.getElementById("quantidade").value);
         const categoria = document.getElementById("categoria").value;
+        const unidade = document.getElementById("unidade").value; // Adicionado
 
         console.log(
-          `Dados do produto: Nome=${nome}, Preço=${preco}, Quantidade=${quantidade}, Categoria=${categoria}`
+          `Dados do produto: Nome=${nome}, Preço=${preco}, Quantidade=${quantidade}, Categoria=${categoria}, Unidade=${unidade}` // Atualizado
         );
 
         // Chamar a função do backend para adicionar o produto
-        window.api.adicionarProduto(nome, preco, quantidade, categoria)
+        window.api
+          .adicionarProduto(nome, preco, quantidade, categoria, unidade) // Atualizado
           .then((message) => {
             console.log("Produto adicionado com sucesso:", message);
             alert(message);
@@ -119,7 +132,8 @@
       btnListarProdutos.addEventListener("click", () => {
         console.log("Botão 'Listar Produtos' clicado.");
 
-        window.api.obterProdutos()
+        window.api
+          .obterProdutos()
           .then((produtos) => {
             console.log("Produtos retornados do backend:", produtos);
             const tabelaProdutos = document
@@ -130,20 +144,20 @@
             if (produtos.length === 0) {
               console.log("Nenhum produto cadastrado.");
               tabelaProdutos.innerHTML =
-                "<tr><td colspan='4'>Nenhum produto cadastrado.</td></tr>";
+                "<tr><td colspan='5'>Nenhum produto cadastrado.</td></tr>"; // Atualizado para 5
               return;
             }
 
             produtos.forEach((produto) => {
               console.log(
-                `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}`
+                `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}, Unidade=${produto.unidade}` // Atualizado
               );
               const row = tabelaProdutos.insertRow();
               row.insertCell(0).textContent = produto.nome || "Não disponível";
               row.insertCell(1).textContent = produto.categoria || "Não disponível";
-              row.insertCell(2).textContent =
-                produto.quantidade !== null ? produto.quantidade : "Não disponível";
+              row.insertCell(2).textContent = produto.quantidade !== null ? produto.quantidade : "Não disponível";
               row.insertCell(3).textContent = "R$ " + (produto.preco || 0).toFixed(2);
+              row.insertCell(4).textContent = produto.unidade || "Não disponível"; // Adicionado
             });
           })
           .catch((error) => {

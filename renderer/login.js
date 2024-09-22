@@ -9,14 +9,17 @@ document
     try {
       const resultado = await window.api.login(email, senha);
       console.log(resultado);
-      window.location.href =
-        "/home/leperfekt/Documents/ERP-Hortifruti/renderer/index.html"; // Correção feita aqui
-      //document.getElementById("login-screen").style.display = "none"; // Oculta a tela de login
-      //document.getElementById("main-header").style.display = "block"; // Mostra o cabeçalho principal
+      
+      // Redirecionar para a tela principal
+      // Para Electron, você pode usar:
+      window.location.href = "index.html"; // Use um caminho relativo
+
+      // Ocultar a tela de login e mostrar o cabeçalho
+      // document.getElementById("login-screen").style.display = "none";
+      // document.getElementById("main-header").style.display = "block";
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       document.getElementById("login-error").textContent = error.message;
       document.getElementById("login-error").style.display = "block"; // Mostra a mensagem de erro
     }
-
   });
