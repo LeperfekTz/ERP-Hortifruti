@@ -184,20 +184,27 @@ button:hover {
 
 /* Estilo da tabela para listagem de produtos */
 
+section {
+  margin: 2em auto;
+  padding: 2em; /* Aumentar se necessário */
+  max-width: 750px;
+  background-color: white;
+  border-radius: 8px; /* Mantém as bordas arredondadas */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo da tabela para listagem de produtos */
 #tabela-produtos {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 #tabela-produtos th,
 #tabela-produtos td {
   padding: 12px;
   text-align: left;
-  border: 1px solid #ddd;
-  border-radius: 4px; /* Bordas arredondadas nas células */
+  border-radius: 8px;
+  border: 1px solid #ddd; /* Borda entre as células */
 }
 
 #tabela-produtos th {
@@ -206,16 +213,13 @@ button:hover {
 }
 
 #tabela-produtos tr:nth-child(even) {
-  background-color: #f2f2f2; /* Listras na tabela */
+  background-color: #f2f2f2; /* Linhas alternadas */
 }
 
-#tabela-relatorio {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  border-radius: 8px; /* Bordas arredondadas na tabela */
-  overflow: hidden; /* Para aplicar o border-radius nas células */
+#tabela-produtos tr:hover {
+  background-color: #ddd; /* Destaque ao passar o mouse */
 }
+
 
 #voltar-btn {
   padding: 0.5em 1em;
