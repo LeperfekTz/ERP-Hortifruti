@@ -8,22 +8,29 @@
   </head>
   <body>
     <!-- Tela de Login -->
+<body>
+    <!-- Tela de Login -->
     <div id="login-screen">
-      <div class="login-container">
-        <h1>Login</h1>
-        <form id="login-form" autocomplete="on">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" autocomplete="email" required />
-          <label for="senha">Senha:</label>
-          <input type="password" id="senha" name="senha" autocomplete="current-password" required />
-          <button type="submit" class="login-button">Entrar</button>
-        </form>
-        <p id="login-error" style="color: red; display: none">
-          Email ou senha incorretos.
-        </p>
-        <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
-      </div>
+        <div class="login-container">
+            <h1>Login</h1>
+            <form id="login-form" autocomplete="on">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" autocomplete="email" required />
+                <ul id="email-autocomplete-list" class="autocomplete-list"></ul> <!-- Verifique se este elemento existe -->
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" required />
+                <button type="submit" class="login-button">Entrar</button>
+            </form>
+            <p id="login-error" style="color: red; display: none">
+                Email ou senha incorretos.
+            </p>
+            <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
+        </div>
     </div>
+
+    <script src="login.js"></script> <!-- Mova o script para cá -->
+</body>
+
 
     <!-- Tela de Boas-Vindas -->
     <div id="welcome-screen">

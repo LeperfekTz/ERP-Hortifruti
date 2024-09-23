@@ -12,7 +12,7 @@
   color: white;
   z-index: 1000;
   opacity: 1;
-  animation: fadeOut 3s 2s forwards; /* Animação com atraso de 2 segundos */
+  animation: fadeOut 1s 3s forwards; /* Animação com atraso de 2 segundos */
 }
 
 .welcome-container {
@@ -58,132 +58,131 @@ p {
 }
 /* Estilos normais da página */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    text-align: center;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }
 
 nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #333;
-    border-radius: 15px; /* Bordas arredondadas para a navbar */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para a navbar */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #333;
+  border-radius: 7px; /* Bordas arredondadas para a navbar */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para a navbar */
 }
 
 nav ul li {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    display: block;
-    border-radius: 8px; /* Bordas arredondadas para os links */
-    transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  border-radius: 8px; /* Bordas arredondadas para os links */
+  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
 }
 
 nav ul li a:hover {
-    background-color: #575757; /* Cor de fundo ao passar o mouse nos links */
+  background-color: #3cff0036; /* Cor de fundo ao passar o mouse nos links */
 }
 
 /* Cabeçalho */
 header {
-    background-color: #4caf50; /* Cor verde para o cabeçalho */
-    color: white;
-    padding: 1em;
-    text-align: center;
-    border-bottom: 2px solid #388e3c; /* Borda inferior verde escuro */
+  background-color: #4caf50; /* Cor verde para o cabeçalho */
+  color: rgb(255, 255, 255);
+  padding: 1em;
+  text-align: center;
+  border-bottom: 2px solid #388e3c; /* Borda inferior verde escuro */
 }
 
 /* Navegação */
 nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
 }
 
 nav ul li {
-    display: inline;
-    margin-right: 20px;
+  display: inline;
+  margin-right: 20px;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 nav ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Seção principal */
 section {
-    margin: 2em auto;
-    padding: 2em;
-    max-width: 600px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 2em auto;
+  padding: 2em;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Formulário */
 form label {
-    display: block;
-    margin: 10px 0 5px 0;
-    font-weight: bold;
+  display: block;
+  margin: 10px 0 5px 0;
+  font-weight: bold;
 }
 
 form input {
-    padding: 0.5em;
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 1em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  padding: 0.5em;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 /* Formulário select */
 form select {
-    padding: 0.5em;
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 1em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  padding: 0.5em;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 /* Botão */
 button {
-    padding: 0.5em 1em;
-    background-color: #4caf50; /* Cor do botão verde */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
+  padding: 0.5em 1em;
+  background-color: #4caf50; /* Cor do botão verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
 }
 
 button:hover {
-    background-color: #388e3c; /* Cor ao passar o mouse (verde escuro) */
+  background-color: #388e3c; /* Cor ao passar o mouse (verde escuro) */
 }
 
 /* Estilo da tabela para listagem de produtos */
-
 
 #tabela-produtos {
   width: 100%;
@@ -195,9 +194,10 @@ button:hover {
 
 #tabela-produtos th,
 #tabela-produtos td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 12px;
   text-align: left;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Bordas arredondadas nas células */
 }
 
 #tabela-produtos th {
@@ -209,6 +209,27 @@ button:hover {
   background-color: #f2f2f2; /* Listras na tabela */
 }
 
+#tabela-relatorio {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 8px; /* Bordas arredondadas na tabela */
+  overflow: hidden; /* Para aplicar o border-radius nas células */
+}
+
+#voltar-btn {
+  padding: 0.5em 1em;
+  background-color: #333;; /* Cor do botão verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+#voltar-btn:hover {
+  background-color: #3cff0036; /* Cor ao passar o mouse (verde escuro) */
+}
 .edit-nome,
 .edit-categoria,
 .edit-quantidade,
@@ -227,16 +248,15 @@ button:hover {
   outline: none; /* Remove o contorno padrão */
 }
 
-
 /* Rodapé */
 footer {
-    text-align: center;
-    padding: 1em;
-    background-color: #4caf50; /* Rodapé verde */
-    color: white;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+  text-align: center;
+  padding: 1em;
+  background-color: #4caf50; /* Rodapé verde */
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 /* Estilo para centralizar a tela de login */
@@ -249,6 +269,7 @@ footer {
 }
 
 .login-container {
+  position: relative; /* Adiciona essa linha */
   background-color: #ffffff; /* Área branca */
   padding: 40px; /* Aumenta o espaço ao redor do conteúdo */
   border-radius: 15px; /* Borda arredondada */
@@ -284,7 +305,7 @@ footer {
 .login-container button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50; /* Cor do botão */
+  background-color: #4caf50; /* Cor do botão */
   border: none;
   border-radius: 10px; /* Arredondamento das bordas do botão */
   color: white;
@@ -310,7 +331,7 @@ footer {
 }
 
 .login-container a {
-  color: #4CAF50; /* Cor do link */
+  color: #4caf50; /* Cor do link */
   text-decoration: none;
 }
 
@@ -328,7 +349,8 @@ footer {
   overflow: hidden; /* Para aplicar o border-radius nas células */
 }
 
-#tabela-relatorio th, #tabela-relatorio td {
+#tabela-relatorio th,
+#tabela-relatorio td {
   padding: 12px;
   text-align: left;
   border: 1px solid #ddd;
@@ -351,4 +373,41 @@ footer {
 #tabela-relatorio td {
   font-size: 16px;
 }
+.autocomplete-list {
+  list-style-type: none;
+  transition: height 0.2s; /* Suave transição de altura */
+  padding: 0;
+  margin: 0;
+  border: 2px solid #cccccc; /* Borda igual à dos inputs */
+  border-radius: 10px; /* Bordas arredondadas */
+  position: absolute;
+  background-color: white; /* Cor de fundo da lista */
+  z-index: 1000;
+  width: calc(100% - 20px); /* Ajuste para ficar alinhado */
+  max-width: 310px; /* Limita a largura máxima para que não fique muito comprida */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  max-height: 40px; /* Limitar a altura */
+  overflow-y: auto; /* Rolagem se necessário */
+  display: none; /* Escondido por padrão */
+}
 
+.autocomplete-list.show {
+  display: block; /* Mostra a lista quando necessário */
+}
+
+.autocomplete-list li {
+  padding: 10px; /* Mais espaçamento interno */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+  font-family: Arial, sans-serif; /* Fonte consistente */
+}
+
+.autocomplete-list li:hover {
+  background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+  color: #333333; /* Mudança na cor do texto */
+}
+
+.autocomplete-list li:active {
+  background-color: #9ff070; /* Cor ao clicar */
+  color: #4dfc56; /* Mudança na cor do texto */
+}

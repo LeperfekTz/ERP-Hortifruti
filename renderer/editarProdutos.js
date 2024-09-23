@@ -25,30 +25,63 @@ document.addEventListener("DOMContentLoaded", function () {
         if (produtos.length === 0) {
           console.log("Nenhum produto cadastrado.");
           tabelaProdutos.innerHTML =
-            "<tr><td colspan='5'>Nenhum produto cadastrado.</td></tr>";
+            "<tr><td colspan='6'>Nenhum produto cadastrado.</td></tr>"; // Atualizado para 6
           return;
         }
 
         // Listar cada produto
         produtos.forEach((produto) => {
           console.log(
-            `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}`
+            `Produto: Nome=${produto.nome}, Categoria=${produto.categoria}, Quantidade=${produto.quantidade}, Preço=${produto.preco}, Unidade=${produto.unidade}`
           );
           const row = tabelaProdutos.insertRow();
-          row.insertCell(0).textContent = produto.nome || "Não disponível";
-          row.insertCell(1).textContent = produto.categoria || "Não disponível";
-          row.insertCell(2).textContent =
-            produto.quantidade !== null ? produto.quantidade : "Não disponível";
-          row.insertCell(3).textContent =
-            "R$ " + (produto.preco || 0).toFixed(2);
+          row.insertCell(
+            0
+          ).innerHTML = `<input type="text" value="${produto.nome}" data-id="${produto.id}" class="edit-nome">`;
+          row.insertCell(
+            1
+          ).innerHTML = `<input type="text" value="${produto.categoria}" data-id="${produto.id}" class="edit-categoria">`;
+          row.insertCell(
+            2
+          ).innerHTML = `<input type="number" value="${produto.quantidade}" data-id="${produto.id}" class="edit-quantidade">`;
+          row.insertCell(
+            3
+          ).innerHTML = `<input type="number" step="0.01" value="${produto.preco}" data-id="${produto.id}" class="edit-preco">`;
+          row.insertCell(
+            4
+          ).innerHTML = `<input type="text" value="${produto.unidade}" data-id="${produto.id}" class="edit-unidade">`; // Nova entrada para unidade
 
-          const editButton = document.createElement("button");
-          editButton.textContent = "Editar";
-          editButton.addEventListener("click", () => {
-            // Abrir o modal ou formulário para edição do produto
-            abrirFormularioEdicao(produto);
+          const saveButton = document.createElement("button");
+          saveButton.textContent = "Salvar";
+          saveButton.addEventListener("click", () => {
+            const id = row.querySelector(".edit-nome").getAttribute("data-id");
+            const nome = row.querySelector(".edit-nome").value;
+            const categoria = row.querySelector(".edit-categoria").value;
+            const quantidade = parseInt(
+              row.querySelector(".edit-quantidade").value,
+              10
+            );
+            const preco = parseFloat(row.querySelector(".edit-preco").value);
+            const unidade = row.querySelector(".edit-unidade").value; // Adicionado
+
+            if (nome && categoria && quantidade >= 0 && preco >= 0 && unidade) {
+              window.api
+                .editarProduto(id, nome, preco, quantidade, categoria, unidade) // Atualizado
+                .then((message) => {
+                  alert(message);
+                  listarProdutos(); // Atualizar a lista de produtos após edição
+                })
+                .catch((error) => {
+                  console.error("Erro ao editar produto:", error.message);
+                  alert("Erro ao editar produto: " + error.message);
+                });
+            } else {
+              alert(
+                "Todos os campos são obrigatórios e devem ter valores válidos."
+              );
+            }
           });
-          row.insertCell(4).appendChild(editButton);
+          row.insertCell(5).appendChild(saveButton); // Atualizado para 5
 
           const deleteButton = document.createElement("button");
           deleteButton.textContent = "Excluir";
@@ -66,42 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
           });
-          row.insertCell(5).appendChild(deleteButton);
+          row.insertCell(6).appendChild(deleteButton); // Atualizado para 6
         });
       })
       .catch((error) => {
         console.error("Erro ao listar produtos:", error.message);
         alert("Erro ao listar produtos: " + error.message);
       });
-  }
-
-  // Função para abrir o formulário de edição
-  function abrirFormularioEdicao(produto) {
-    const nome = prompt("Nome do produto:", produto.nome);
-    const preco = prompt("Preço do produto:", produto.preco);
-    const quantidade = prompt("Quantidade do produto:", produto.quantidade);
-    const categoria = prompt("Categoria do produto:", produto.categoria);
-
-    if (nome && preco && quantidade && categoria) {
-      window.api
-        .editarProduto(
-          produto.id,
-          nome,
-          parseFloat(preco),
-          parseInt(quantidade),
-          categoria
-        )
-        .then((message) => {
-          alert(message);
-          listarProdutos(); // Atualizar a lista de produtos após edição
-        })
-        .catch((error) => {
-          console.error("Erro ao editar produto:", error.message);
-          alert("Erro ao editar produto: " + error.message);
-        });
-    } else {
-      alert("Todos os campos são obrigatórios.");
-    }
   }
 
   // Listar produtos ao carregar a página
