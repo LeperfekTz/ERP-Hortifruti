@@ -1,126 +1,126 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Editar Categorias - ERP Hortifruti</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header>
-    <h1>Editar Categorias</h1>
-    <nav>
-      <button id="voltar-btn">Voltar</button>
-    </nav>
-  </header>
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Categorias - ERP Hortifruti</title>
+    <link rel="stylesheet" href="editarCategorias.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Editar Categorias</h1>
+      <nav>
+        <button id="voltar-btn">Voltar</button>
+      </nav>
+    </header>
 
-  <section>
-    <h2>Lista de Categorias</h2>
-    <table id="tabela-categorias">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- As categorias serão listadas aqui -->
-      </tbody>
-    </table>
+    <section>
+      <h2>Lista de Categorias</h2>
+      <table id="tabela-categorias">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- As categorias serão listadas aqui -->
+        </tbody>
+      </table>
 
-    <h2>Adicionar Nova Categoria</h2>
-    <form id="adicionar-categoria-form">
-      <label for="nome-categoria">Nome:</label>
-      <input type="text" id="nome-categoria" required />
-      <button type="submit">Adicionar Categoria</button>
-    </form>
-  </section>
+      <h2>Adicionar Nova Categoria</h2>
+      <form id="adicionar-categoria-form">
+        <label for="nome-categoria">Nome:</label>
+        <input type="text" id="nome-categoria" required />
+        <button type="submit">Adicionar Categoria</button>
+      </form>
+    </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const voltarBtn = document.getElementById("voltar-btn");
-      const adicionarCategoriaForm = document.getElementById("adicionar-categoria-form");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const voltarBtn = document.getElementById("voltar-btn");
+        const adicionarCategoriaForm = document.getElementById("adicionar-categoria-form");
 
-      voltarBtn.addEventListener("click", () => {
-        window.close(); // Fecha a janela atual
-      });
+        voltarBtn.addEventListener("click", () => {
+          window.close(); // Fecha a janela atual
+        });
 
-      adicionarCategoriaForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const nome = document.getElementById("nome-categoria").value;
-        window.api.adicionarCategoria(nome)
-          .then((message) => {
-            alert(message);
-            listarCategorias(); // Atualiza a lista de categorias
-          })
-          .catch((error) => {
-            console.error("Erro ao adicionar categoria:", error.message);
-            alert("Erro ao adicionar categoria: " + error.message);
-          });
-      });
-
-      function listarCategorias() {
-        window.api.obterCategorias()
-          .then((categorias) => {
-            const tabelaCategorias = document.getElementById("tabela-categorias").getElementsByTagName("tbody")[0];
-            tabelaCategorias.innerHTML = "";
-
-            if (categorias.length === 0) {
-              tabelaCategorias.innerHTML = "<tr><td colspan='2'>Nenhuma categoria cadastrada.</td></tr>";
-              return;
-            }
-
-            categorias.forEach((categoria) => {
-              const row = tabelaCategorias.insertRow();
-              row.insertCell(0).innerHTML = `<input type="text" value="${categoria.nome}" data-id="${categoria.id}" class="edit-nome">`;
-
-              const saveButton = document.createElement("button");
-              saveButton.textContent = "Salvar";
-              saveButton.addEventListener("click", () => {
-                const id = row.querySelector(".edit-nome").getAttribute("data-id");
-                const nome = row.querySelector(".edit-nome").value;
-                if (nome) {
-                  window.api.editarCategoria(id, nome)
-                    .then((message) => {
-                      alert(message);
-                      listarCategorias(); // Atualiza a lista de categorias
-                    })
-                    .catch((error) => {
-                      console.error("Erro ao editar categoria:", error.message);
-                      alert("Erro ao editar categoria: " + error.message);
-                    });
-                } else {
-                  alert("O nome da categoria é obrigatório.");
-                }
-              });
-              row.insertCell(1).appendChild(saveButton);
-
-              const deleteButton = document.createElement("button");
-              deleteButton.textContent = "Excluir";
-              deleteButton.addEventListener("click", () => {
-                if (confirm("Tem certeza de que deseja excluir esta categoria?")) {
-                  window.api.excluirCategoria(categoria.id)
-                    .then((message) => {
-                      alert(message);
-                      listarCategorias(); // Atualiza a lista de categorias
-                    })
-                    .catch((error) => {
-                      console.error("Erro ao excluir categoria:", error.message);
-                      alert("Erro ao excluir categoria: " + error.message);
-                    });
-                }
-              });
-              row.insertCell(2).appendChild(deleteButton);
+        adicionarCategoriaForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const nome = document.getElementById("nome-categoria").value;
+          window.api.adicionarCategoria(nome)
+            .then((message) => {
+              alert(message);
+              listarCategorias(); // Atualiza a lista de categorias
+            })
+            .catch((error) => {
+              console.error("Erro ao adicionar categoria:", error.message);
+              alert("Erro ao adicionar categoria: " + error.message);
             });
-          })
-          .catch((error) => {
-            console.error("Erro ao listar categorias:", error.message);
-            alert("Erro ao listar categorias: " + error.message);
-          });
-      }
+        });
 
-      listarCategorias(); // Lista categorias ao carregar a página
-    });
-  </script>
-</body>
-</html>
+        function listarCategorias() {
+          window.api.obterCategorias()
+            .then((categorias) => {
+              const tabelaCategorias = document.getElementById("tabela-categorias").getElementsByTagName("tbody")[0];
+              tabelaCategorias.innerHTML = "";
+
+              if (categorias.length === 0) {
+                tabelaCategorias.innerHTML = "<tr><td colspan='2'>Nenhuma categoria cadastrada.</td></tr>";
+                return;
+              }
+
+              categorias.forEach((categoria) => {
+                const row = tabelaCategorias.insertRow();
+                row.insertCell(0).innerHTML = `<input type="text" value="${categoria.nome}" data-id="${categoria.id}" class="edit-nome">`;
+
+                const saveButton = document.createElement("button");
+                saveButton.textContent = "Salvar";
+                saveButton.addEventListener("click", () => {
+                  const id = row.querySelector(".edit-nome").getAttribute("data-id");
+                  const nome = row.querySelector(".edit-nome").value;
+                  if (nome) {
+                    window.api.editarCategoria(id, nome)
+                      .then((message) => {
+                        alert(message);
+                        listarCategorias(); // Atualiza a lista de categorias
+                      })
+                      .catch((error) => {
+                        console.error("Erro ao editar categoria:", error.message);
+                        alert("Erro ao editar categoria: " + error.message);
+                      });
+                  } else {
+                    alert("O nome da categoria é obrigatório.");
+                  }
+                });
+                row.insertCell(1).appendChild(saveButton);
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Excluir";
+                deleteButton.addEventListener("click", () => {
+                  if (confirm("Tem certeza de que deseja excluir esta categoria?")) {
+                    window.api.excluirCategoria(categoria.id)
+                      .then((message) => {
+                        alert(message);
+                        listarCategorias(); // Atualiza a lista de categorias
+                      })
+                      .catch((error) => {
+                        console.error("Erro ao excluir categoria:", error.message);
+                        alert("Erro ao excluir categoria: " + error.message);
+                      });
+                  }
+                });
+                row.insertCell(2).appendChild(deleteButton);
+              });
+            })
+            .catch((error) => {
+              console.error("Erro ao listar categorias:", error.message);
+              alert("Erro ao listar categorias: " + error.message);
+            });
+        }
+
+        listarCategorias(); // Lista categorias ao carregar a página
+      });
+    </script>
+  </body>
+  </html>

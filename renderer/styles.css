@@ -135,7 +135,7 @@ nav ul li a:hover {
 section {
   margin: 2em auto;
   padding: 2em;
-  max-width: 600px;
+  max-width: 50%;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -182,43 +182,6 @@ button:hover {
   background-color: #388e3c; /* Cor ao passar o mouse (verde escuro) */
 }
 
-/* Estilo da tabela para listagem de produtos */
-
-section {
-  margin: 2em auto;
-  padding: 2em; /* Aumentar se necessário */
-  max-width: 750px;
-  background-color: white;
-  border-radius: 8px; /* Mantém as bordas arredondadas */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilo da tabela para listagem de produtos */
-#tabela-produtos {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#tabela-produtos th,
-#tabela-produtos td {
-  padding: 12px;
-  text-align: left;
-  border-radius: 8px;
-  border: 1px solid #ddd; /* Borda entre as células */
-}
-
-#tabela-produtos th {
-  background-color: #4caf50;
-  color: white;
-}
-
-#tabela-produtos tr:nth-child(even) {
-  background-color: #f2f2f2; /* Linhas alternadas */
-}
-
-#tabela-produtos tr:hover {
-  background-color: #ddd; /* Destaque ao passar o mouse */
-}
 
 
 #voltar-btn {
@@ -414,4 +377,46 @@ footer {
 .autocomplete-list li:active {
   background-color: #9ff070; /* Cor ao clicar */
   color: #4dfc56; /* Mudança na cor do texto */
+}
+
+/* Estilos gerais do corpo */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo do cabeçalho */
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilo do menu de navegação */
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+/* Estilo do botão "Voltar" */
+#voltar-btn {
+  background-color: #333;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#voltar-btn:hover {
+  background-color: #a5f3a8;
 }

@@ -1,0 +1,227 @@
+/* Estilos normais da página */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo do cabeçalho */
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #388e3c;
+}
+
+/* Estilo do menu de navegação */
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #333;
+  border-radius: 7px;
+  box-shadow: 0px 30px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #3cff0036;
+}
+/* Estilo do cabeçalho */
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #388e3c;
+}
+
+/* Estilo do menu de navegação */
+nav {
+  margin: 10px 0; /* Margem acima e abaixo do menu */
+}
+
+/* Seção principal */
+section {
+  margin: 2em auto;
+  padding: 2em;
+  max-width: 50%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h1{
+  color: #ffffff; /* Cor dos títulos */
+}
+
+/* Estilo da tabela */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Colapsar bordas */
+  margin: 20px 0;
+}
+
+th, td {
+  border: 1px solid #ddd; /* Borda da tabela */
+  text-align: left;
+  padding: 8px; /* Espaçamento interno */
+}
+
+th {
+  background-color: #4caf50; /* Cor de fundo do cabeçalho */
+  color: white; /* Cor do texto do cabeçalho */
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* Cor de fundo para linhas pares */
+}
+
+/* Estilos do formulário */
+form {
+  margin-bottom: 1.5em;
+}
+
+form label {
+  display: block; /* Exibe o rótulo como bloco */
+  margin: 10px 0 5px 0; /* Margem do rótulo */
+  font-weight: bold; /* Negrito */
+}
+
+form input[type="text"] {
+  padding: 0.5em; /* Espaçamento interno */
+  width: calc(100% - 12px); /* Largura do input com padding */
+  margin-bottom: 1em; /* Margem abaixo do input */
+  border: 1px solid #ddd; /* Borda do input */
+  border-radius: 4px; /* Bordas arredondadas */
+}
+
+/* Botão */
+button {
+  padding: 0.5em 1em; /* Espaçamento interno */
+  background-color: #4caf50; /* Cor de fundo do botão */
+  color: white; /* Cor do texto */
+  border: none; /* Sem borda */
+  border-radius: 4px; /* Bordas arredondadas */
+  cursor: pointer; /* Cursor de mão ao passar o mouse */
+  font-size: 1em; /* Tamanho da fonte */
+  margin-right: 10px; /* Espaçamento entre botões */
+}
+
+button:hover {
+  background-color: #388e3c; /* Cor ao passar o mouse */
+}
+
+/* Estilo da lista de categorias disponíveis */
+ul#lista-categorias {
+  list-style-type: none; /* Sem marcadores */
+  padding: 0; /* Sem padding */
+  margin-top: 20px; /* Margem acima da lista */
+}
+
+ul#lista-categorias li {
+  background-color: #fff; /* Fundo branco */
+  padding: 10px; /* Espaçamento interno */
+  margin-bottom: 10px; /* Margem abaixo do item */
+  border: 1px solid #ddd; /* Borda do item */
+  border-radius: 4px; /* Bordas arredondadas */
+}
+
+ul#lista-categorias li:hover {
+  background-color: #f2f2f2; /* Cor ao passar o mouse */
+}
+
+/* Rodapé */
+footer {
+  text-align: center; /* Centraliza o texto */
+  padding: 1em; /* Espaçamento interno */
+  background-color: #4caf50; /* Cor de fundo */
+  color: white; /* Cor do texto */
+  position: fixed; /* Fixo na parte inferior */
+  bottom: 0; /* Na parte inferior */
+  width: 100%; /* Largura total */
+}
+
+
+/* Formulário */
+form {
+  margin-bottom: 1.5em;
+}
+
+form label {
+  display: block;
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+}
+
+form input,
+form select {
+  padding: 0.5em;
+  width: 100%;
+  margin-bottom: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Botão */
+button {
+  padding: 0.5em 1em;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+/* Estilo da lista de produtos disponíveis */
+ul#lista-produtos-venda {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+ul#lista-produtos-venda li {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+ul#lista-produtos-venda li:hover {
+  background-color: #f2f2f2;
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 1em;
+  background-color: #4caf50;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

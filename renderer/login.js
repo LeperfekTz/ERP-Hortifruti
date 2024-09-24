@@ -12,7 +12,7 @@ document
       
       // Redirecionar para a tela principal
       // Para Electron, você pode usar:
-      window.location.href = "index.html"; // Use um caminho relativo
+      window.location.href = "inicio.html"; // Use um caminho relativo
 
       // Ocultar a tela de login e mostrar o cabeçalho
       // document.getElementById("login-screen").style.display = "none";
