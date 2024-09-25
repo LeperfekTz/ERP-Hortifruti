@@ -8,11 +8,11 @@ body {
 
 /* Estilo do cabeçalho */
 header {
-  background-color: #4caf50;
-  color: white;
+  background-color: #56bb5b;
+  color: rgb(0, 0, 0);
   padding: 10px;
   text-align: center;
-  border-bottom: 2px solid #388e3c;
+  border-bottom: 2px solid #56bb5b;
 }
 
 /* Estilo do menu de navegação */
@@ -32,7 +32,7 @@ nav ul li {
 }
 
 nav ul li a {
-  color: white;
+  color: rgb(255, 255, 255);
   text-decoration: none;
   padding: 10px 20px;
   display: block;
@@ -49,7 +49,7 @@ section {
   margin: 2em auto;
   padding: 2em;
   max-width: 70%;
-  background-color: white;
+  background-color: rgb(208, 250, 204);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -57,8 +57,8 @@ section {
 /* Estilo do botão */
 button {
   padding: 0.5em 1em;
-  background-color: #4caf50;
-  color: white;
+  background-color: #56bb5b;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -66,7 +66,7 @@ button {
 }
 
 button:hover {
-  background-color: #388e3c;
+  background-color: #56bb5b;
 }
 
 /* Estilo da tabela */
@@ -76,7 +76,7 @@ table {
   margin-top: 20px;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 table th,
@@ -88,8 +88,8 @@ table td {
 }
 
 table th {
-  background-color: #4caf50;
-  color: white;
+  background-color: #56bb5b;
+  color: rgb(0, 0, 0);
 }
 
 table tr:nth-child(even) {
