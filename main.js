@@ -4,7 +4,6 @@ const sqlite3 = require("sqlite3").verbose();
 const log = require("electron-log");
 const bcrypt = require("bcrypt");
 
-
 // Configura o local do arquivo de log
 log.transports.file.resolvePathFn = () =>
   `${app.getPath("userData")}/logs/main.log`;
@@ -31,7 +30,6 @@ const db = new sqlite3.Database(
   }
 );
 
-
 // Define um timeout de 5 segundos para bloqueios
 db.configure("busyTimeout", 5000);
 
@@ -46,7 +44,6 @@ function createWindow() {
       enableRemoteModule: false,
     },
   });
-
 
   mainWindow.loadFile("renderer/login.html");
 }
@@ -131,8 +128,6 @@ ipcMain.handle("cadastrar-usuario", async (event, nome, email, senha) => {
     }
   });
 });
-
-
 
 ipcMain.handle(
   "adicionar-produto",
@@ -340,7 +335,6 @@ ipcMain.handle("excluir-categoria", async (event, categoriaId) => {
   }
 });
 
-
 ipcMain.handle("excluir-produto", (event, produtoId) => {
   return new Promise((resolve, reject) => {
     const query = `DELETE FROM produtos WHERE id = ?`;
@@ -395,4 +389,22 @@ ipcMain.handle("login", async (event, email, senha) => {
       }
     });
   });
+});
+
+// Carregar status do caixa
+ipcMain.handle("carregar-caixa", async () => {
+  const caixa = await db.getCaixaStatus(); // Função que busca os dados do caixa no SQL
+  return caixa;
+});
+
+// Carregar movimentação do caixa
+ipcMain.handle("carregar-movimentacao", async () => {
+  const movimentacoes = await db.getMovimentacoes(); // Função que busca a movimentação do caixa no SQL
+  return movimentacoes;
+});
+
+// Carregar resumo do caixa
+ipcMain.handle("carregar-resumo", async () => {
+  const resumo = await db.getResumoCaixa(); // Função que busca o resumo no SQL
+  return resumo;
 });
