@@ -24,7 +24,8 @@ formRegistrarVenda.addEventListener("submit", (e) => {
     .registrarVenda(produtoId, quantidade)
     .then((message) => {
       console.log("Venda registrada com sucesso:", message);
-      alert(message);
+      alert("Venda realizada com sucesso!");
+
       // Limpar o formulário após o registro
       formRegistrarVenda.reset();
       atualizarProdutos(); // Atualizar a lista de produtos após o registro
@@ -35,7 +36,7 @@ formRegistrarVenda.addEventListener("submit", (e) => {
 
       // Personalizar a mensagem para casos específicos
       if (errorMessage.includes("Quantidade insuficiente em estoque")) {
-        errorMessage = "Fora de estoque";
+        errorMessage = "Estoque insuficiente para o produto selecionado.";
       }
 
       console.error("Erro ao registrar a venda:", error.message);
@@ -76,7 +77,9 @@ function atualizarProdutos() {
         // Adicionar à lista
         const listItem = document.createElement("li");
         listItem.textContent = `${produto.nome} - Quantidade: ${
-          produto.quantidade || "Não disponível"
+          produto.quantidade !== undefined
+            ? produto.quantidade
+            : "Não disponível"
         }`;
         listaProdutosVenda.appendChild(listItem);
       });

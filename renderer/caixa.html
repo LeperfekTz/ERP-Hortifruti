@@ -1,48 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caixa</title>
-    <link rel="stylesheet" href="caixa.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caixa</title>
+  <link rel="stylesheet" href="caixa.css">
 </head>
 <body>
-    <div class="caixa-container">
-        <h1>Caixa</h1>
-        <label for="valor">Valor de Abertura:</label>
-        <input type="number" id="valor" placeholder="Digite o valor" step="0.01">
-        <button id="abrir-btn">Abrir Caixa</button>
-        <p id="valor-abertura">Valor de Abertura: R$ 0.00</p>
-        <button id="fechar-btn">Fechar Caixa</button>
-        
-        <h2>Histórico de Vendas</h2>
+  <div class="caixa-container">
+    <header>
+      <h1>Caixa</h1>
+      <nav>
+        <ul>
+          <li><a href="inicio.html">Sobre</a></li>
+          <li><a href="index.html">Página inicial</a></li>
+          <li><a href="caixa.html">Caixa</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="vendas.html">Vendas</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <label for="valor">Valor de Abertura:</label>
+      <input type="number" id="valor" placeholder="Digite o valor" step="0.01">
+      <button id="abrir-btn">Abrir Caixa</button>
+      <p id="valor-abertura">Valor de Abertura: R$ 0.00</p>
+      <button id="fechar-btn">Fechar Caixa</button>
+
+      <h2>Histórico de Vendas</h2>
+      <div class="tabela-container"> <!-- Div para a tabela -->
         <table id="historico-vendas">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Total</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- As vendas serão adicionadas aqui -->
-            </tbody>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Produto</th>
+              <th>Quantidade</th>
+              <th>Total</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- As vendas serão adicionadas aqui -->
+          </tbody>
         </table>
-    </div>
+      </div> <!-- Fim da div para a tabela -->
+    </section>
 
     <!-- Modal para resumo do fechamento do caixa -->
     <div id="resumo-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>Resumo do Caixa</h3>
-            <p id="valor-inicial">Valor Inicial: R$ 0.00</p>
-            <p id="total-vendas">Total de Vendas: R$ 0.00</p>
-            <p id="valor-final">Valor Final: R$ 0.00</p>
-        </div>
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Resumo do Caixa</h3>
+        <p id="valor-inicial">Valor Inicial: R$ 0.00</p>
+        <p id="total-vendas">Total de Vendas: R$ 0.00</p>
+        <p id="valor-final">Valor Final: R$ 0.00</p>
+      </div>
     </div>
+  </div>
 
-    <script src="caixa.js"></script>
+  <script src="caixa.js" defer></script>
 </body>
 </html>

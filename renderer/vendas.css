@@ -76,7 +76,7 @@ h1{
 table {
   width: 100%;
   border-collapse: collapse; /* Colapsar bordas */
-  margin: 20px 0;
+  margin: 0px 0;
 }
 
 th, td {
@@ -106,8 +106,8 @@ form label {
 }
 
 form input[type="text"] {
-  padding: 0.5em; /* Espaçamento interno */
-  width: calc(100% - 12px); /* Largura do input com padding */
+  padding: 1px; /* Espaçamento interno */
+  width: calc(50%); /* Largura do input com padding */
   margin-bottom: 1em; /* Margem abaixo do input */
   border: 1px solid #ddd; /* Borda do input */
   border-radius: 4px; /* Bordas arredondadas */
@@ -174,7 +174,7 @@ form label {
 form input,
 form select {
   padding: 0.5em;
-  width: 100%;
+  width: 20%;
   margin-bottom: 1em;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -189,7 +189,7 @@ button {
   border-radius: 7px;
   cursor: pointer;
   font-size: 1em;
-  width: 10%;
+  width: 15%;
 }
 
 button:hover {

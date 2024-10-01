@@ -1,36 +1,61 @@
-document.getElementById("btn-gerar-relatorio").addEventListener("click", () => {
+document.getElementById("abrir-btn").addEventListener("click", () => {
+  const valorAbertura = document.getElementById("valor").value;
+
   window.api
-    .obterRelatorioVendas()
-    .then((vendas) => {
-      const tabelaRelatorio = document
-        .getElementById("tabela-relatorio")
-        .getElementsByTagName("tbody")[0];
-      tabelaRelatorio.innerHTML = ""; // Limpar tabela antes de preencher
-
-      const labels = [];
-      const values = [];
-
-      vendas.forEach((venda) => {
-        const row = tabelaRelatorio.insertRow();
-        row.insertCell(0).textContent = venda.produto;
-        row.insertCell(1).textContent = venda.categoria;
-        row.insertCell(2).textContent = venda.data_venda;
-        row.insertCell(3).textContent = venda.total_quantidade;
-        row.insertCell(4).textContent = "R$" + venda.valor_total.toFixed(2);
-
-        
-        // Preparar dados para o gráfico
-        labels.push(venda.produto);
-        values.push(venda.valor_total);
-      });
-
-      // Atualizar o gráfico
-      renderSalesChart({ labels, values });
+    .abrirCaixa(parseFloat(valorAbertura))
+    .then((resposta) => {
+      document.getElementById("valor-abertura").textContent = `Valor de Abertura: R$ ${resposta.valor_abertura}`;
     })
-    .catch((error) => {
-      console.error("Erro ao carregar relatório de vendas:", error.message);
+    .catch((erro) => {
+      console.error("Erro ao abrir o caixa:", erro.message);
     });
 });
+
+document.getElementById("fechar-btn").addEventListener("click", () => {
+  window.api
+    .fecharCaixa()
+    .then((resumo) => {
+      document.getElementById("valor-inicial").textContent = `Valor Inicial: R$ ${resumo.valor_inicial}`;
+      document.getElementById("total-vendas").textContent = `Total de Vendas: R$ ${resumo.total_vendas}`;
+      document.getElementById("valor-final").textContent = `Valor Final: R$ ${resumo.valor_final}`;
+
+      document.getElementById("resumo-modal").style.display = "block";
+    })
+    .catch((erro) => {
+      console.error("Erro ao fechar o caixa:", erro.message);
+    });
+});
+
+window.api
+  .obterHistoricoVendas()
+  .then((vendas) => {
+    const tabelaHistorico = document
+      .getElementById("historico-vendas")
+      .getElementsByTagName("tbody")[0];
+    tabelaHistorico.innerHTML = ""; // Limpar a tabela antes de preencher
+
+    const labels = [];
+    const values = [];
+
+    vendas.forEach((venda) => {
+      const row = tabelaHistorico.insertRow();
+      row.insertCell(0).textContent = venda.id;
+      row.insertCell(1).textContent = venda.nomeProd;
+      row.insertCell(2).textContent = venda.quantidade;
+      row.insertCell(3).textContent = `R$ ${venda.valor_total.toFixed(2)}`;
+      row.insertCell(4).textContent = venda.data_venda;
+
+      // Preparar dados para o gráfico
+      labels.push(venda.nomeProd);
+      values.push(venda.valor_total);
+    });
+
+    // Atualizar o gráfico
+    renderSalesChart({ labels, values });
+  })
+  .catch((erro) => {
+    console.error("Erro ao carregar histórico de vendas:", erro.message);
+  });
 
 function renderSalesChart(data) {
   const ctx = document.getElementById("salesChart").getContext("2d");

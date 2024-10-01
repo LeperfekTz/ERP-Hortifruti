@@ -39,7 +39,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       enableRemoteModule: false,
     },
@@ -195,16 +195,16 @@ ipcMain.handle("obter-produtos-editar", () => {
     );
   });
 });
-
 ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       db.run("BEGIN TRANSACTION");
 
       db.get(
-        `SELECT preco, quantidade FROM produtos WHERE id = ?`,
+        `SELECT nome, preco, quantidade FROM produtos WHERE id = ?`,
         [produtoId],
-        (err, row) => {
+        (err, produto) => {
+          // Aqui você deve usar 'produto' em vez de 'row'
           if (err) {
             db.run("ROLLBACK");
             reject(
@@ -215,23 +215,23 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
             return;
           }
 
-          if (!row) {
+          if (!produto) {
             db.run("ROLLBACK");
             reject(new Error("Produto não encontrado"));
             return;
           }
 
-          if (row.quantidade < quantidade) {
+          if (produto.quantidade < quantidade) {
             db.run("ROLLBACK");
             reject(new Error("Quantidade insuficiente em estoque"));
             return;
           }
 
-          const valorTotal = row.preco * quantidade;
+          const valorTotal = produto.preco * quantidade;
 
           db.run(
-            `INSERT INTO vendas (nomeProd, quantidade, valor_total) VALUES (?, ?, ?)`,
-            [produtoId, quantidade, valorTotal],
+            `INSERT INTO vendas (nomeProd, quantidade, valor_total, data_venda) VALUES (?, ?, ?, ?)`,
+            [produto.nome, quantidade, valorTotal, new Date().toISOString()], // Insere o nome do produto
             function (err) {
               if (err) {
                 db.run("ROLLBACK");
@@ -264,6 +264,7 @@ ipcMain.handle("registrar-venda", (event, produtoId, quantidade) => {
     });
   });
 });
+
 
 ipcMain.handle("obter-relatorio-vendas", () => {
   return new Promise((resolve, reject) => {
@@ -407,4 +408,65 @@ ipcMain.handle("carregar-movimentacao", async () => {
 ipcMain.handle("carregar-resumo", async () => {
   const resumo = await db.getResumoCaixa(); // Função que busca o resumo no SQL
   return resumo;
+});
+ipcMain.handle("abrir-caixa", async (event, valorAbertura) => {
+  try {
+    const dataAbertura = new Date().toISOString();
+    const insertCaixa = await new Promise((resolve, reject) => {
+      db.run(
+        "INSERT INTO caixa_historico (data_abertura, valor_abertura) VALUES (?, ?)",
+        [dataAbertura, valorAbertura],
+        function (err) {
+          if (err) reject(err);
+          else resolve(this.lastID);
+        }
+      );
+    });
+    return { id: insertCaixa, dataAbertura, valorAbertura };
+  } catch (error) {
+    console.error("Erro ao abrir caixa:", error);
+    throw error;
+  }
+});
+
+ipcMain.handle("fechar-caixa", async (event, valorAbertura) => {
+  try {
+    const totalVendas = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT SUM(valor_total) as totalVendas FROM vendas",
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row.totalVendas || 0);
+        }
+      );
+    });
+
+    const dataFechamento = new Date().toISOString();
+
+    await new Promise((resolve, reject) => {
+      db.run(
+        "UPDATE caixa_historico SET data_fechamento = ?, valor_fechamento = ?, total_vendas = ? WHERE data_fechamento IS NULL",
+        [dataFechamento, valorAbertura + totalVendas, totalVendas],
+        function (err) {
+          if (err) reject(err);
+          else resolve();
+        }
+      );
+    });
+
+    return { total_vendas: totalVendas, data_fechamento: dataFechamento };
+  } catch (error) {
+    console.error("Erro ao fechar caixa:", error);
+    throw error;
+  }
+});
+
+
+ipcMain.handle("obter-historico-vendas", async () => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM vendas ORDER BY data_venda DESC", (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
 });
